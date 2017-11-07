@@ -1,0 +1,9 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/SmartParking.vcxproj
+/.vs/SmartParking/v15
+/__vm
+/SmartParking.vcxproj.filters
+/SmartParking.sln
