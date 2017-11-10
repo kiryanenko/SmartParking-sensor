@@ -8,7 +8,7 @@
 #define CAR_DISTANCE 50		// Дистанция до автомобиля (см)
 
 
-ParkingPlace::ParkingPlace(const byte id)
+void ParkingPlace::init(const byte id)
 {
 	m_id = id;
 	m_isBooked = false;
@@ -42,7 +42,14 @@ void ParkingPlace::setIsBooked(const bool isBooked)
 
 bool ParkingPlace::monitor()
 {
-	float dist = m_sensor->Ranging(CM);
-	m_isFree = dist > CAR_DISTANCE;
+	const float dist = m_sensor->Ranging(CM);
+	const auto isFree = dist > CAR_DISTANCE;
+	const auto isChangeState = isFree != m_isFree;
+	m_isFree = isFree;
+	return isChangeState;
+}
+
+bool ParkingPlace::isFree() const
+{
 	return m_isFree;
 }

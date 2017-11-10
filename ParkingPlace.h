@@ -1,5 +1,5 @@
 #pragma once
-#include <PCF8574\PCF8574.h>
+#include <PCF8574/PCF8574.h>
 #include <Ultrasonic/Ultrasonic.h>
 
 
@@ -15,13 +15,17 @@ private:
 	Ultrasonic *m_sensor;
 
 public:
-	explicit ParkingPlace(const byte id);
+	ParkingPlace() = default;
+
+	void init(const byte id);
 	~ParkingPlace();
 
 	void setIsBooked(const bool isBooked);
 
 	// —читывает и возвращает данные с сенсора
-	// true если парковка свободна
+	// ¬озвращает true при изменении состо€ни€
 	bool monitor();
+
+	bool isFree() const;
 };
 
