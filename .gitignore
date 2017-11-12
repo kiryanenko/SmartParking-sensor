@@ -7,3 +7,5 @@
 /__vm
 /SmartParking.vcxproj.filters
 /SmartParking.sln
+/Debug/*
+/Release/*
