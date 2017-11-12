@@ -1,18 +1,19 @@
 #pragma once
-#include <PCF8574/PCF8574.h>
-#include <Ultrasonic/Ultrasonic.h>
+#include <PCF8574\PCF8574.h>
+#include <SonarI2C\SonarI2C.h>
 
 
 class ParkingPlace
 {
-private:
 	bool m_isBooked;
 	bool m_isFree;
 
 	byte m_id;
 
 	PCF8574 *m_pcf;
-	Ultrasonic *m_sensor;
+	SonarI2C *m_sensor;
+
+	void setIsFree(const bool isFree);
 
 public:
 	ParkingPlace() = default;

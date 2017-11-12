@@ -1,4 +1,8 @@
-#include <SPI\src\SPI.h>
+#include <Wire.h>
+#include <PCF8574\PCF8574.h>
+#include <SonarI2C\SonarI2C.h>
+#include <SPI.h>
+#include <RadioHead-master\RH_RF95.h>
 #include "ParkingPlace.h"
 #include "RadioModule.h"
 
@@ -26,6 +30,7 @@ void setup()
 	for (int i = 0; i < PARKING_PLACES_COUNT; ++i) {
 		parkingPalces[i].init(i);
 	}
+	SonarI2C::begin();
 	delay(300);
 
 
@@ -33,9 +38,12 @@ void setup()
 
 void loop()
 {
-	static unsigned long time = 0;
+	Serial.println("Loop");
+	SonarI2C::doSonar();  // call every cycle, SonarI2C handles the spacing
+	static unsigned long time = millis();
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {
 		if (parkingPalces[i].monitor() || millis() - time > SendingPeriod) {
+			time = millis();
 			radioModule.sendParkingStatus(ID, i, parkingPalces[i].isFree());
 		}
 	}
