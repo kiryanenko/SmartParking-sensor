@@ -1,23 +1,18 @@
 #pragma once
+#include "ReceiverTransmitter.h"
+
 #include <RadioHead-master\RH_RF95.h>
 
+#define FREQUENCY 868.0
 
-class RadioModule
+class RadioModule : public ReceiverTransmitter
 {
 	RH_RF95 m_rf95;
-
-	const byte type_send_msg_parking_status = 'M';
 
 public:
 	RadioModule();
 	~RadioModule();
 
-	bool init();
-	/**
-	 * \brief 
-	 * \param id - идентификатор устройства
-	 * \param parkingPlaceId - номер парковочного места
-	 * \param isFree - свободно ли парковочное место
-	 */
-	void sendParkingStatus(uint16_t id, byte parkingPlaceId, bool isFree);
+	bool init() override;
+	bool send(const byte data[]) override;
 };

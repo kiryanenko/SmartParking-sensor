@@ -1,13 +1,5 @@
 #include "ParkingPlace.h"
 
-#define PIN_TRIG 0
-#define PIN_ECHO 1
-#define PIN_IS_FREE 2
-#define PIN_IS_BOOKED 3
-
-#define CAR_DISTANCE 10		// Дистанция до автомобиля (см)
-
-
 void ParkingPlace::setIsFree(const bool isFree)
 {
 	m_isFree = isFree;

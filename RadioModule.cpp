@@ -1,7 +1,6 @@
 #include "RadioModule.h"
 
 
-
 RadioModule::RadioModule()
 {
 }
@@ -13,21 +12,26 @@ RadioModule::~RadioModule()
 
 bool RadioModule::init()
 {
-	return m_rf95.init();
+	if (m_rf95.init()) {
+		m_rf95.setFrequency(FREQUENCY);
+		return true;
+	}
+	return false;
 }
 
-void RadioModule::sendParkingStatus(uint16_t id, byte parkingPlaceId, bool isFree)
+bool RadioModule::send(const byte data[])
 {
-	Serial.print("[SEND] ");
-	Serial.print(type_send_msg_parking_status); Serial.print(' ');
-	Serial.print(id); Serial.print(' ');
-	Serial.print(parkingPlaceId);  Serial.print(' ');
-	Serial.println(isFree);
+	if (!m_rf95.available()) {
+		Serial.println("[ERROR] RF95 is not available");
+		return false;
+	}
 
-	byte dataToSend[1 + 4 + 1 + 1];
-	memcpy(dataToSend, &type_send_msg_parking_status, 1);
-	memcpy(dataToSend + 1, &id, 4);
-	memcpy(dataToSend + 1 + 4, &parkingPlaceId, 1);
-	memcpy(dataToSend + 1 + 4 + 1, &isFree, 1);
-	//m_rf95.send(dataToSend, sizeof(dataToSend));
+	m_rf95.send(data, sizeof(data));
+	const auto isSend = m_rf95.waitPacketSent();
+
+	if (!isSend) {
+		Serial.println("[ERROR] RF95 not send data");
+	}
+
+	return isSend;
 }
