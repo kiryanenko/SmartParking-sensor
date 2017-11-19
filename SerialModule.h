@@ -8,6 +8,6 @@ public:
 	SerialModule();
 	~SerialModule();
 
-	bool send(const byte data[]) override;
+	bool send(const byte *data, size_t size) override;
 };
 

@@ -1,25 +1,25 @@
 #pragma once
-
+#include <Arduino.h>
 
 class ReceiverTransmitter
 {
-	const byte type_send_msg_parking_status = 'M';
+	const char type_send_msg_parking_status = 'M';
 
 public:
 	ReceiverTransmitter();
 	virtual ~ReceiverTransmitter();
 
 	virtual bool init();
-	virtual bool send(const byte data[]) = 0;
+	virtual bool send(const byte *data, size_t size) = 0;
 	/**
 	* \brief
 	* \param id - идентификатор устройства
 	* \param parkingPlaceId - номер парковочного места
 	* \param isFree - свободно ли парковочное место
 	*/
-	void sendParkingStatus(uint16_t id, byte parkingPlaceId, bool isFree);
+	void sendParkingStatus(const uint64_t id, const uint8_t parkingPlaceId, const bool isFree);
 
 protected:
-	const byte* dataToSendParkingStatus(uint16_t id, byte parkingPlaceId, bool isFree) const;
+	const byte* dataToSendParkingStatus(uint64_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const;
 };
 

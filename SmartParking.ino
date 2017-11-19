@@ -5,7 +5,7 @@
 #include <RadioHead-master\RH_RF95.h>
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
-#include "SerialModule.h"s
+#include "SerialModule.h"
 #include "RadioModule.h"
 
 #define PARKING_PLACES_COUNT 1
@@ -25,14 +25,8 @@ void setup()
 {
 	Serial.begin(9600);
 
-	pinMode(PIN_RESET_LORA, OUTPUT);
-	// reset lora module first. to make sure it will works properly
-	digitalWrite(PIN_RESET_LORA, LOW);
-	delay(1000);
-	digitalWrite(PIN_RESET_LORA, HIGH);
-
-	RadioModule *radioModule = new RadioModule();
-	if (radioModule->init) {
+	RadioModule *radioModule = new RadioModule(PIN_RESET_LORA);
+	if (radioModule->init()) {
 		receiverTransmitter = radioModule;
 		Serial.println("[INFO] RF95 init success!");
 	} else {

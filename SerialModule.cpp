@@ -11,8 +11,9 @@ SerialModule::~SerialModule()
 {
 }
 
-bool SerialModule::send(const byte data[])
+bool SerialModule::send(const byte *data, size_t size)
 {
-	const auto sendedCount = Serial.println(reinterpret_cast<const char *>(data));
-	return sendedCount == sizeof(data);
+	const auto sendedCount = Serial.write(data, size);
+	Serial.println();
+	return sendedCount == size;
 }
