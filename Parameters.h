@@ -23,4 +23,3 @@ public:
 	void setSendingPeriod(uint16_t sendingPeriod);
 	void setSensorSamplingPeriod(uint16_t samplingPeriod);
 };
-

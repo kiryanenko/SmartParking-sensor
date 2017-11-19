@@ -15,12 +15,27 @@ bool ReceiverTransmitter::init()
 	return true;
 }
 
+
+void ReceiverTransmitter::sendInitStatus(const uint32_t id)
+{
+	Serial.print("[SEND] ");
+	Serial.print(type_send_msg_init_status);
+	Serial.print(' ');
+	Serial.println(id);
+
+	size_t bufSize;
+	const auto data = dataToSendInitStatus(id, bufSize);
+	send(data, bufSize);
+	delete[] data;
+}
+
+
 void ReceiverTransmitter::sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree)
 {
 	Serial.print("[SEND] ");
 	Serial.print(type_send_msg_parking_status);
 	Serial.print(' ');
-	Serial.print((long)id);
+	Serial.print(id);
 	Serial.print(' ');
 	Serial.print(parkingPlaceId);
 	Serial.print(' ');
@@ -31,6 +46,17 @@ void ReceiverTransmitter::sendParkingStatus(const uint32_t id, const uint8_t par
 	send(data, bufSize);
 	delete[] data;
 }
+
+
+const byte* ReceiverTransmitter::dataToSendInitStatus(uint32_t id, size_t &bufSize) const
+{
+	bufSize = 1 + 4;
+	byte* dataToSend = new byte[bufSize];
+	memcpy(dataToSend, &type_send_msg_init_status, 1);
+	memcpy(dataToSend + 1, &id, 4);
+	return dataToSend;
+}
+
 
 const byte* ReceiverTransmitter::dataToSendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const
 {
