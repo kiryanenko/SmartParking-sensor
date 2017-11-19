@@ -15,7 +15,7 @@ bool ReceiverTransmitter::init()
 	return true;
 }
 
-void ReceiverTransmitter::sendParkingStatus(const uint64_t id, const uint8_t parkingPlaceId, const bool isFree)
+void ReceiverTransmitter::sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree)
 {
 	Serial.print("[SEND] ");
 	Serial.print(type_send_msg_parking_status);
@@ -32,8 +32,7 @@ void ReceiverTransmitter::sendParkingStatus(const uint64_t id, const uint8_t par
 	delete[] data;
 }
 
-const byte* ReceiverTransmitter::dataToSendParkingStatus(uint64_t id, uint8_t parkingPlaceId, bool isFree,
-                                                         size_t& bufSize) const
+const byte* ReceiverTransmitter::dataToSendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const
 {
 	bufSize = 1 + 4 + 1 + 1;
 	byte* dataToSend = new byte[bufSize];

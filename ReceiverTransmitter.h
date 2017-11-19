@@ -17,9 +17,9 @@ public:
 	* \param parkingPlaceId - номер парковочного места
 	* \param isFree - свободно ли парковочное место
 	*/
-	void sendParkingStatus(const uint64_t id, const uint8_t parkingPlaceId, const bool isFree);
+	void sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree);
 
 protected:
-	const byte* dataToSendParkingStatus(uint64_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const;
+	const byte* dataToSendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const;
 };
 

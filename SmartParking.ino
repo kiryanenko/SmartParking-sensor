@@ -3,22 +3,21 @@
 #include <SonarI2C\SonarI2C.h>
 #include <SPI.h>
 #include <RadioHead-master\RH_RF95.h>
+#include <Arduino-EEPROMEx\EEPROMex.h>
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
 #include "SerialModule.h"
 #include "RadioModule.h"
+#include "Parameters.h"
 
 #define PARKING_PLACES_COUNT 1
 #define PIN_RESET_LORA 9
 
-uint16_t sensorSamplingPeriod = 500;		// Период опроса датчиков
-uint16_t SendingPeriod = 2000;				// Период отправки сообщений
-uint64_t ID = 0;
 
-// Singleton instance of the radio driver
+// Singleton instances
 ReceiverTransmitter *receiverTransmitter;
-
 ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
+Parameters parameters;
 
 
 void setup()
@@ -39,9 +38,8 @@ void setup()
 		parkingPalces[i].init(i);
 	}
 	SonarI2C::begin();
+
 	delay(300);
-
-
 }
 
 void loop()
@@ -50,10 +48,10 @@ void loop()
 	SonarI2C::doSonar();  // call every cycle, SonarI2C handles the spacing
 	static unsigned long time = millis();
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {
-		if (parkingPalces[i].monitor() || millis() - time > SendingPeriod) {
+		if (parkingPalces[i].monitor() || millis() - time > parameters.getSendingPeriod()) {
 			time = millis();
-			receiverTransmitter->sendParkingStatus(ID, i, parkingPalces[i].isFree());
+			receiverTransmitter->sendParkingStatus(parameters.getId(), i, parkingPalces[i].isFree());
 		}
 	}
-	delay(sensorSamplingPeriod);
+	delay(parameters.getSensorSamplingPeriod);
 }
