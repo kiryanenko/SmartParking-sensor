@@ -24,6 +24,11 @@ void setup()
 {
 	Serial.begin(9600);
 
+	// Установка параметров и запись их в память
+	parameters.setId(1);
+	parameters.setSendingPeriod(2000);
+	parameters.setSensorSamplingPeriod(500);
+
 	RadioModule *radioModule = new RadioModule(PIN_RESET_LORA);
 	if (radioModule->init()) {
 		receiverTransmitter = radioModule;
@@ -53,5 +58,5 @@ void loop()
 			receiverTransmitter->sendParkingStatus(parameters.getId(), i, parkingPalces[i].isFree());
 		}
 	}
-	delay(parameters.getSensorSamplingPeriod);
+	delay(parameters.getSensorSamplingPeriod());
 }

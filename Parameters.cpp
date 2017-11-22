@@ -40,7 +40,7 @@ void Parameters::setId(const uint32_t id)
 void Parameters::setSendingPeriod(const uint16_t sendingPeriod)
 {
 	if (m_sendingPeriod != sendingPeriod) {
-		m_id = sendingPeriod;
+		m_sendingPeriod = sendingPeriod;
 		EEPROM.write(adress_sending_period, sendingPeriod);
 	}
 }
@@ -48,7 +48,7 @@ void Parameters::setSendingPeriod(const uint16_t sendingPeriod)
 void Parameters::setSensorSamplingPeriod(const uint16_t samplingPeriod)
 {
 	if (m_sendingPeriod != samplingPeriod) {
-		m_id = samplingPeriod;
+		m_sensorSamplingPeriod = samplingPeriod;
 		EEPROM.write(adress_sensor_sampling_period, samplingPeriod);
 	}
 }
