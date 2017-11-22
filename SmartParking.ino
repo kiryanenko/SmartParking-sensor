@@ -17,7 +17,7 @@
 // Singleton instances
 ReceiverTransmitter *receiverTransmitter;
 ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
-Parameters parameters;
+Parameters &parameters = Parameters::instance();
 
 
 void setup()

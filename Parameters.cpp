@@ -9,9 +9,12 @@ Parameters::Parameters()
 }
 
 
-Parameters::~Parameters()
+const Parameters& Parameters::instance()
 {
+	static Parameters theSingleInstance;
+	return theSingleInstance;
 }
+
 
 uint32_t Parameters::getId() const
 {
