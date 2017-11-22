@@ -1,9 +1,10 @@
 #include "RadioModule.h"
 
 
-RadioModule::RadioModule(const int pinResetLora)
+RadioModule::RadioModule(const int pinResetLora, const int timeout)
 {
 	m_pinResetLora = pinResetLora;
+	m_timeout = timeout;
 }
 
 
@@ -18,24 +19,19 @@ bool RadioModule::init()
 	reset();
 
 	if (m_rf95.init()) {
-		m_rf95.setFrequency(FREQUENCY);
-		return true;
+		return m_rf95.setFrequency(FREQUENCY);
 	}
 	return false;
 }
 
 bool RadioModule::send(const byte *data, size_t size)
 {
-	if (!m_rf95.available()) {
-		Serial.println("[ERROR] RF95 is not available");
-		return false;
-	}
-
 	m_rf95.send(data, size);
-	const auto isSend = m_rf95.waitPacketSent();
+	const auto isSend = m_rf95.waitPacketSent(m_timeout);
 
 	if (!isSend) {
 		Serial.println("[ERROR] RF95 not send data");
+		reset();
 	}
 
 	return isSend;

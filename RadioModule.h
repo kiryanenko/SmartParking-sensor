@@ -9,9 +9,10 @@ class RadioModule : public ReceiverTransmitter
 {
 	RH_RF95 m_rf95;
 	int m_pinResetLora;
+	int m_timeout;
 
 public:
-	RadioModule(int pinResetLora);
+	RadioModule(int pinResetLora, int timeout);
 	~RadioModule();
 
 	bool init() override;

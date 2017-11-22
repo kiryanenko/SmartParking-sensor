@@ -29,7 +29,7 @@ void setup()
 	parameters.setSendingPeriod(2000);
 	parameters.setSensorSamplingPeriod(500);
 
-	RadioModule *radioModule = new RadioModule(PIN_RESET_LORA);
+	RadioModule *radioModule = new RadioModule(PIN_RESET_LORA, parameters.getSendingPeriod() / PARKING_PLACES_COUNT);
 	if (radioModule->init()) {
 		receiverTransmitter = radioModule;
 		Serial.println("[INFO] RF95 init success!");
