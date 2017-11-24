@@ -20,7 +20,7 @@
 ReceiverTransmitter *receiverTransmitter;
 ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
 Parameters &parameters = Parameters::instance();
-SerialModule serialModule(new ReceiveMessageHandler());
+SerialModule serialModule(new ReceiveMessageHandler(parkingPalces, PARKING_PLACES_COUNT));
 
 void setup()
 {
@@ -34,7 +34,7 @@ void setup()
 	RadioModule *radioModule = new RadioModule(
 		PIN_RESET_LORA, 
 		parameters.getSendingPeriod() / PARKING_PLACES_COUNT, 
-		new RadioModuleHandler()
+		new RadioModuleHandler(parkingPalces, PARKING_PLACES_COUNT)
 	);
 	if (radioModule->init()) {
 		receiverTransmitter = radioModule;

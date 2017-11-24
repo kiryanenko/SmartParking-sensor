@@ -12,28 +12,31 @@
 
 class ParkingPlace
 {
-	bool m_isBooked;
+	byte m_id;
+
+	bool m_isReserved;
 	bool m_isFree;
 
-	byte m_id;
+	long m_reservationTime;
 
 	PCF8574 *m_pcf;
 	SonarI2C *m_sensor;
 
-	void setIsFree(const bool isFree);
-
 public:
 	ParkingPlace() = default;
-
-	void init(const byte id);
 	~ParkingPlace();
 
-	void setIsBooked(const bool isBooked);
-
+	void init(const byte id);
 	// —читывает и возвращает данные с сенсора
 	// ¬озвращает true при изменении состо€ни€
 	bool monitor();
-
 	bool isFree() const;
+
+	void reserve(uint16_t time);
+	void cancelReservation();
+
+private:
+	void setIsFree(const bool isFree);
+	void setReserve(const bool isReserve);
 };
 

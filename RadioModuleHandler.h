@@ -4,9 +4,9 @@ class RadioModuleHandler :
 	public ReceiveMessageHandler
 {
 public:
-	RadioModuleHandler();
+	RadioModuleHandler(ParkingPlace *parkingPlaces, uint8_t parkingPlacesCount);
 	~RadioModuleHandler();
 
-	void onRecvMsgSetId(uint32_t id) override {}
+	void onSetIdMsg(uint32_t id) override {}
 };
 
