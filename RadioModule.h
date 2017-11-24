@@ -12,11 +12,13 @@ class RadioModule : public ReceiverTransmitter
 	int m_timeout;
 
 public:
-	RadioModule(int pinResetLora, int timeout);
+	RadioModule(int pinResetLora, int timeout, AbstractReceiveMessageHandler *handler);
 	~RadioModule();
 
 	bool init() override;
 	bool send(const byte *data, size_t size) override;
+	bool available() override;
+	byte* recv(size_t &size) override;
 
 private:
 	void reset() const;

@@ -1,8 +1,9 @@
 #include "ReceiverTransmitter.h"
 
 
-ReceiverTransmitter::ReceiverTransmitter()
+ReceiverTransmitter::ReceiverTransmitter(AbstractReceiveMessageHandler *handler)
 {
+	m_handler = handler;
 }
 
 
@@ -16,10 +17,29 @@ bool ReceiverTransmitter::init()
 }
 
 
+void ReceiverTransmitter::handleRecieveMessages()
+{
+	while (available()) {
+		size_t size;
+		const byte *msg = recv(size);
+		if (msg) {
+			if (msg[0] == type_of_recv_msg_set_id) {
+				handleRecvMsgSetId(msg, size);
+			} else if (msg[0] == type_of_recv_msg_set_sensor_sampling_period) {
+				handleRecvMsgSetSamplingPeriod(msg, size);
+			} else if (msg[0] == type_of_recv_msg_set_sending_period) {
+				handleRecvMsgSetSendingPeriod(msg, size);
+			}
+			delete[] msg;
+		}
+	}
+}
+
+
 void ReceiverTransmitter::sendInitStatus(const uint32_t id)
 {
 	Serial.print("[SEND] ");
-	Serial.print(type_send_msg_init_status);
+	Serial.print(type_of_send_msg_init_status);
 	Serial.print(' ');
 	Serial.println(id);
 
@@ -33,7 +53,7 @@ void ReceiverTransmitter::sendInitStatus(const uint32_t id)
 void ReceiverTransmitter::sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree)
 {
 	Serial.print("[SEND] ");
-	Serial.print(type_send_msg_parking_status);
+	Serial.print(type_of_send_msg_parking_status);
 	Serial.print(' ');
 	Serial.print(id);
 	Serial.print(' ');
@@ -52,7 +72,7 @@ const byte* ReceiverTransmitter::dataToSendInitStatus(uint32_t id, size_t &bufSi
 {
 	bufSize = 1 + 4;
 	byte* dataToSend = new byte[bufSize];
-	memcpy(dataToSend, &type_send_msg_init_status, 1);
+	memcpy(dataToSend, &type_of_send_msg_init_status, 1);
 	memcpy(dataToSend + 1, &id, 4);
 	return dataToSend;
 }
@@ -62,9 +82,36 @@ const byte* ReceiverTransmitter::dataToSendParkingStatus(uint32_t id, uint8_t pa
 {
 	bufSize = 1 + 4 + 1 + 1;
 	byte* dataToSend = new byte[bufSize];
-	memcpy(dataToSend, &type_send_msg_parking_status, 1);
+	memcpy(dataToSend, &type_of_send_msg_parking_status, 1);
 	memcpy(dataToSend + 1, &id, 4);
 	memcpy(dataToSend + 1 + 4, &parkingPlaceId, 1);
 	memcpy(dataToSend + 1 + 4 + 1, &isFree, 1);
 	return dataToSend;
+}
+
+
+void ReceiverTransmitter::handleRecvMsgSetId(const byte* msg, size_t size)
+{
+	if (size == sizeof(uint32_t)) {
+		const auto id = reinterpret_cast<uint32_t>(msg);
+		m_handler->onRecvMsgSetId(id);
+	}
+}
+
+
+void ReceiverTransmitter::handleRecvMsgSetSamplingPeriod(const byte* msg, size_t size)
+{
+	if (size == sizeof(uint16_t)) {
+		const auto period = reinterpret_cast<uint16_t>(msg);
+		m_handler->onRecvMsgSetSamplingPeriod(period);
+	}
+}
+
+
+void ReceiverTransmitter::handleRecvMsgSetSendingPeriod(const byte* msg, size_t size)
+{
+	if (size == sizeof(uint16_t)) {
+		const auto period = reinterpret_cast<uint16_t>(msg);
+		m_handler->onRecvMsgSetSendingPeriod(period);
+	}
 }

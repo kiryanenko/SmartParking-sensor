@@ -9,6 +9,8 @@
 #include "SerialModule.h"
 #include "RadioModule.h"
 #include "Parameters.h"
+#include "ReceiveMessageHandler.h"
+#include "RadioModuleHandler.h"
 
 #define PARKING_PLACES_COUNT 1
 #define PIN_RESET_LORA 9
@@ -18,7 +20,7 @@
 ReceiverTransmitter *receiverTransmitter;
 ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
 Parameters &parameters = Parameters::instance();
-
+SerialModule serialModule(new ReceiveMessageHandler());
 
 void setup()
 {
@@ -29,13 +31,18 @@ void setup()
 	parameters.setSendingPeriod(2000);
 	parameters.setSensorSamplingPeriod(500);
 
-	RadioModule *radioModule = new RadioModule(PIN_RESET_LORA, parameters.getSendingPeriod() / PARKING_PLACES_COUNT);
+	RadioModule *radioModule = new RadioModule(
+		PIN_RESET_LORA, 
+		parameters.getSendingPeriod() / PARKING_PLACES_COUNT, 
+		new RadioModuleHandler()
+	);
 	if (radioModule->init()) {
 		receiverTransmitter = radioModule;
 		Serial.println("[INFO] RF95 init success!");
 	} else {
 		Serial.println("[WARN] RF95 init failed!");
-		receiverTransmitter = new SerialModule();
+		delete radioModule;
+		receiverTransmitter = &serialModule;
 		Serial.println("[INFO] Serial module init success!");
 	}
 	
@@ -58,5 +65,7 @@ void loop()
 			receiverTransmitter->sendParkingStatus(parameters.getId(), i, parkingPalces[i].isFree());
 		}
 	}
+	receiverTransmitter->handleRecieveMessages();
+	serialModule.handleRecieveMessages();
 	delay(parameters.getSensorSamplingPeriod());
 }

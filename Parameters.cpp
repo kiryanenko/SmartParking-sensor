@@ -9,7 +9,7 @@ Parameters::Parameters()
 }
 
 
-const Parameters& Parameters::instance()
+Parameters& Parameters::instance()
 {
 	static Parameters theSingleInstance;
 	return theSingleInstance;

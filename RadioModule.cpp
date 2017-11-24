@@ -1,7 +1,8 @@
 #include "RadioModule.h"
 
 
-RadioModule::RadioModule(const int pinResetLora, const int timeout)
+RadioModule::RadioModule(const int pinResetLora, const int timeout, AbstractReceiveMessageHandler *handler) :
+	ReceiverTransmitter(handler)
 {
 	m_pinResetLora = pinResetLora;
 	m_timeout = timeout;
@@ -11,6 +12,7 @@ RadioModule::RadioModule(const int pinResetLora, const int timeout)
 RadioModule::~RadioModule()
 {
 }
+
 
 bool RadioModule::init()
 {
@@ -24,6 +26,7 @@ bool RadioModule::init()
 	return false;
 }
 
+
 bool RadioModule::send(const byte *data, size_t size)
 {
 	m_rf95.send(data, size);
@@ -36,6 +39,27 @@ bool RadioModule::send(const byte *data, size_t size)
 
 	return isSend;
 }
+
+
+bool RadioModule::available()
+{
+	return m_rf95.available();
+}
+
+
+byte* RadioModule::recv(size_t &size)
+{
+	uint8_t *buf = new uint8_t[RH_RF95_MAX_MESSAGE_LEN];
+	uint8_t len = sizeof(buf);
+	if (!m_rf95.recv(buf, &len)) {
+		delete[] buf;
+		size = 0;
+		return NULL;
+	}
+	size = len;
+	return buf;
+}
+
 
 void RadioModule::reset() const
 {
