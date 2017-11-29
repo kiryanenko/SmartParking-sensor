@@ -59,7 +59,7 @@ bool ParkingPlace::isFree() const
 void ParkingPlace::reserve(const uint16_t time)
 {
 	m_reservationTime = millis() + time * 1000;
-	m_isReserved = true;
+	setReserve(true);
 }
 
 void ParkingPlace::cancelReservation()

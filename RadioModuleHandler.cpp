@@ -2,7 +2,7 @@
 
 
 
-RadioModuleHandler::RadioModuleHandler(ParkingPlace *parkingPlaces, uint8_t parkingPlacesCount) :
+RadioModuleHandler::RadioModuleHandler(ParkingPlace *parkingPlaces, const uint8_t parkingPlacesCount) :
 	ReceiveMessageHandler(parkingPlaces, parkingPlacesCount)
 {
 }

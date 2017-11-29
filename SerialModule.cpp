@@ -14,6 +14,7 @@ SerialModule::~SerialModule()
 
 bool SerialModule::send(const byte *data, size_t size)
 {
+	Serial.write(static_cast<uint8_t>(size));
 	const auto sendedCount = Serial.write(data, size);
 	Serial.println();
 	return sendedCount == size;
@@ -31,7 +32,13 @@ byte* SerialModule::recv(size_t &size)
 	size = 0;
 	const auto len = Serial.read();
 
+	Serial.print("[DEBUG] Serial recv, available ");
+	Serial.print(Serial.available());
+	Serial.print(", len = ");
+	Serial.println(len);
+
 	if (len <= 0) {
+		Serial.print("[ERROR] Serial recv: len < 0");
 		return nullptr;
 	}
 
@@ -41,6 +48,9 @@ byte* SerialModule::recv(size_t &size)
 	}
 
 	if (size != len) {
+		Serial.print("[ERROR] Serial recv: readen count != len; readen count = ");
+		Serial.println(size);
+
 		delete[] buf;
 		return nullptr;
 	}

@@ -5,14 +5,14 @@
 
 class ReceiverTransmitter
 {
-	const char type_of_send_msg_parking_status = 'S';
-	const char type_of_send_msg_init_status = 'I';
+	const uint8_t type_of_send_msg_parking_status = 'S';
+	const uint8_t type_of_send_msg_init_status = 'I';
 
-	const char type_of_recv_msg_set_id = 'i';
-	const char type_of_recv_msg_set_sensor_sampling_period = 's';
-	const char type_of_recv_msg_set_sending_period = 'p';
-	const char type_of_recv_msg_reserve = 'r';
-	const char type_of_recv_msg_cancel_reservation = 'R';
+	const uint8_t type_of_recv_msg_set_id = 'i';
+	const uint8_t type_of_recv_msg_set_sensor_sampling_period = 's';
+	const uint8_t type_of_recv_msg_set_sending_period = 'p';
+	const uint8_t type_of_recv_msg_reserve = 'r';
+	const uint8_t type_of_recv_msg_cancel_reservation = 'c';
 
 	AbstractReceiveMessageHandler *m_handler;
 
