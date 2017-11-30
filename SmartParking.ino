@@ -14,6 +14,7 @@
 
 #define PARKING_PLACES_COUNT 1
 #define PIN_RESET_LORA 9
+#define PIN_INT_SONAR 3
 
 
 // Singleton instances
@@ -46,10 +47,10 @@ void setup()
 		Serial.println("[INFO] Serial module init success!");
 	}
 	
+	SonarI2C::begin(PIN_INT_SONAR);
 	for (int i = 0; i < PARKING_PLACES_COUNT; ++i) {
 		parkingPalces[i].init(i);
 	}
-	SonarI2C::begin();
 
 	delay(300);
 }
