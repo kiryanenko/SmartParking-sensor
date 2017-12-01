@@ -19,6 +19,6 @@ T getReverseData(const void *src)
 template <typename T>
 void cpyReverseData(void *dst, const T &data)
 {
-	T reverseData = getReverseData<T>(data);
-	memcpy(dst, reverseData, sizeof(T));
+	T reverseData = getReverseData<T>(&data);
+	memcpy(dst, &reverseData, sizeof(T));
 }

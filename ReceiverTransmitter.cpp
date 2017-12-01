@@ -99,8 +99,8 @@ const byte* ReceiverTransmitter::dataToSendInitStatus(uint32_t id, size_t &bufSi
 {
 	bufSize = 1 + 4;
 	const auto dataToSend = new byte[bufSize];
-	cpyReverseData(dataToSend, &type_of_send_msg_init_status);
-	cpyReverseData(dataToSend + 1, &id);
+	cpyReverseData(dataToSend, type_of_send_msg_init_status);
+	cpyReverseData(dataToSend + 1, id);
 	return dataToSend;
 }
 
@@ -109,10 +109,10 @@ const byte* ReceiverTransmitter::dataToSendParkingStatus(uint32_t id, uint8_t pa
 {
 	bufSize = 1 + 4 + 1 + 1;
 	const auto dataToSend = new byte[bufSize];
-	cpyReverseData(dataToSend, &type_of_send_msg_parking_status);
-	cpyReverseData(dataToSend + 1, &id);
-	cpyReverseData(dataToSend + 1 + 4, &parkingPlaceId);
-	cpyReverseData(dataToSend + 1 + 4 + 1, &isFree);
+	cpyReverseData(dataToSend, type_of_send_msg_parking_status);
+	cpyReverseData(dataToSend + 1, id);
+	cpyReverseData(dataToSend + 1 + 4, parkingPlaceId);
+	cpyReverseData(dataToSend + 1 + 4 + 1, isFree);
 	return dataToSend;
 }
 

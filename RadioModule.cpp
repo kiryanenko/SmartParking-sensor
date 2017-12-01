@@ -21,7 +21,10 @@ bool RadioModule::init()
 	reset();
 
 	if (m_rf95.init()) {
-		return m_rf95.setFrequency(FREQUENCY);
+		m_rf95.setFrequency(FREQUENCY);
+		m_rf95.setTxPower(14, false);
+		m_rf95.setPromiscuous(true);
+		return true;
 	}
 	return false;
 }
@@ -29,6 +32,13 @@ bool RadioModule::init()
 
 bool RadioModule::send(const byte *data, size_t size)
 {
+	Serial.print("[DEBUG] SEND DATA: ");
+	for (int i = 0; i < size; ++i) {
+		Serial.print(data[i]);
+		Serial.print(' ');
+	}
+	Serial.println();
+
 	m_rf95.send(data, size);
 	const auto isSend = m_rf95.waitPacketSent(m_timeout);
 
