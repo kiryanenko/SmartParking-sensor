@@ -3,7 +3,7 @@
 ################################################################################
 
 /SmartParking.vcxproj
-/.vs/SmartParking/v15
+/.vs/*
 /__vm
 /SmartParking.vcxproj.filters
 /SmartParking.sln

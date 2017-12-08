@@ -22,14 +22,14 @@ void ReceiveMessageHandler::onSetIdMsg(const uint32_t id)
 void ReceiveMessageHandler::onSetSamplingPeriodMsg(const uint16_t period)
 {
 	auto& params = Parameters::instance();
-	params.setId(period);
+	params.setSensorSamplingPeriod(period);
 }
 
 
 void ReceiveMessageHandler::onSetSendingPeriodMsg(const uint16_t period)
 {
 	auto& params = Parameters::instance();
-	params.setId(period);
+	params.setSendingPeriod(period);
 }
 
 
