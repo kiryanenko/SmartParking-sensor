@@ -53,6 +53,7 @@ void setup()
 	}
 
 	delay(300);
+	receiverTransmitter->sendInitStatus(parameters.getId());
 }
 
 void loop()
