@@ -1,6 +1,7 @@
 #pragma once
 #include <PCF8574\PCF8574.h>
 #include <SonarI2C\SonarI2C.h>
+#include "Timer.h"
 
 #define PIN_TRIG 0
 #define PIN_IS_FREE 1
@@ -16,7 +17,7 @@ class ParkingPlace
 	bool m_isReserved;
 	bool m_isFree;
 
-	long m_reservationTime;
+    Timer m_reservationTimer;
 
 	PCF8574 *m_pcf;
 	SonarI2C *m_sensor;

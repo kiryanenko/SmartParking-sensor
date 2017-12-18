@@ -42,7 +42,7 @@ bool ParkingPlace::monitor()
 	const auto isChangeState = isFree != m_isFree;
 	setIsFree(isFree);
 
-	if (m_isReserved && m_reservationTime < millis()) {
+	if (m_isReserved && m_reservationTimer.isFinished()) {
 		setReserve(false);
 	}
 
@@ -58,7 +58,7 @@ bool ParkingPlace::isFree() const
 
 void ParkingPlace::reserve(const uint16_t time)
 {
-	m_reservationTime = millis() + time * 1000;
+    m_reservationTimer.start(time * 1000);
 	setReserve(true);
 }
 
