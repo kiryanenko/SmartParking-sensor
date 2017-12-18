@@ -1,5 +1,7 @@
 #include "Timer.h"
 
+#include <Arduino.h>
+
 Timer::Timer()
 {
 }
