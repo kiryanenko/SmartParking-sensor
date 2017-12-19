@@ -15,4 +15,3 @@ public:
     void start(const unsigned long period);
     bool isFinished() const;
 };
-
