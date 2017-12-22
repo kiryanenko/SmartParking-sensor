@@ -1,9 +1,13 @@
 #include <Wire.h>
-#include <PCF8574\PCF8574.h>
-#include <SonarI2C\SonarI2C.h>
+#include <PCF8574.h>
+#include <SonarI2C.h>
 #include <SPI.h>
-#include <RadioHead-master\RH_RF95.h>
+#include <RadioHead\RH_RF95.h>
 #include <Arduino-EEPROMEx\EEPROMex.h>
+#include <OLED_I2C.h>
+#include <Time\TimeLib.h>
+#include <Time.h>
+#include <DS3232RTC.h>
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
 #include "SerialModule.h"
@@ -11,6 +15,7 @@
 #include "Parameters.h"
 #include "ReceiveMessageHandler.h"
 #include "RadioModuleHandler.h"
+#include "Display.h"
 
 #define PARKING_PLACES_COUNT 1
 #define PIN_RESET_LORA 9
@@ -22,6 +27,7 @@ ReceiverTransmitter *receiverTransmitter;
 ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
 Parameters &parameters = Parameters::instance();
 SerialModule serialModule(new ReceiveMessageHandler(parkingPalces, PARKING_PLACES_COUNT));
+Display display;
 
 void setup()
 {
@@ -49,8 +55,10 @@ void setup()
 	
 	SonarI2C::begin(PIN_INT_SONAR);
 	for (int i = 0; i < PARKING_PLACES_COUNT; ++i) {
-		parkingPalces[i].init(i);
+		parkingPalces[i].init(i + 1);
 	}
+
+    display.init();
 
 	delay(300);
 	receiverTransmitter->sendInitStatus(parameters.getId());
@@ -69,5 +77,8 @@ void loop()
 	}
 	receiverTransmitter->handleRecieveMessages();
 	serialModule.handleRecieveMessages();
+
+    display.drawTime(12);
+
 	delay(parameters.getSensorSamplingPeriod());
 }

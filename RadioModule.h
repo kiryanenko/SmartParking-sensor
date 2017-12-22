@@ -1,7 +1,7 @@
 #pragma once
 #include "ReceiverTransmitter.h"
 
-#include <RadioHead-master\RH_RF95.h>
+#include <RadioHead\RH_RF95.h>
 
 #define FREQUENCY 868.0
 
