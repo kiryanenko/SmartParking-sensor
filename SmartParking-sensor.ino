@@ -8,6 +8,7 @@
 #include <Time\TimeLib.h>
 #include <Time.h>
 #include <DS3232RTC.h>
+#include <i2ckeypad.h>
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
 #include "SerialModule.h"
@@ -20,6 +21,10 @@
 #define PARKING_PLACES_COUNT 1
 #define PIN_RESET_LORA 9
 #define PIN_INT_SONAR 3
+
+#define KEYPAD_I2C_ADDR 0x20
+#define KEYPAD_ROWS 4
+#define KEYPAD_COLS 4
 
 
 // Singleton instances
