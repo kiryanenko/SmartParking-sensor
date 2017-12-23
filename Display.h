@@ -1,11 +1,10 @@
 #pragma once
 
-#include <OLED_I2C.h>
+#include <OzOLED.h>
 #include <Time.h>
 
 class Display
 {
-    OLED  *m_oled;
 public:
     Display();
     ~Display();
@@ -13,5 +12,7 @@ public:
     void init();
 
     void drawTime(time_t time);
+
+    void draw();
 };
 

@@ -9,6 +9,7 @@
 #include <Time.h>
 #include <DS3232RTC.h>
 #include <i2ckeypad.h>
+#include <OzOLED.h>
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
 #include "SerialModule.h"
@@ -17,6 +18,7 @@
 #include "ReceiveMessageHandler.h"
 #include "RadioModuleHandler.h"
 #include "Display.h"
+#include "Payment.h"
 
 #define PARKING_PLACES_COUNT 1
 #define PIN_RESET_LORA 9
@@ -83,7 +85,7 @@ void loop()
 	receiverTransmitter->handleRecieveMessages();
 	serialModule.handleRecieveMessages();
 
-    display.drawTime(12);
+    display.draw();
 
 	delay(parameters.getSensorSamplingPeriod());
 }

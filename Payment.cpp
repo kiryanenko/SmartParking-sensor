@@ -1,6 +1,8 @@
 #include "Payment.h"
 
-Payment::Payment() : m_keypad(KEYPAD_I2C_ADDR, KEYPAD_ROWS, KEYPAD_COLS)
+Payment::Payment(const int keypadI2CAddr, const int keypadRows, const int keypadCols) : 
+    m_keypad(keypadI2CAddr, keypadRows, keypadCols), 
+    m_state(START)
 {
 }
 

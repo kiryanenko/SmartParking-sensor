@@ -1,7 +1,6 @@
 #include "Display.h"
 
 
-
 Display::Display()
 {
 }
@@ -13,15 +12,15 @@ Display::~Display()
 
 void Display::init()
 {
-    m_oled = new OLED(SDA, SCL);
-    m_oled->begin();
-    extern uint8_t SmallFont[];
-    m_oled->setFont(SmallFont);
+    OzOled.init();  //initialze Oscar OLED display
 }
 
 void Display::drawTime(time_t time)
 {
+}
 
-    m_oled->print("time", 10, 10);
-    m_oled->update();
+void Display::draw()
+{
+    OzOled.clearDisplay();
+    OzOled.printString("Hello World!"); //Print the String
 }

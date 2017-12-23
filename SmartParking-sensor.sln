@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SmartParking-sensor", "SmartParking-sensor.vcxproj", "{C5F80730-F44F-4478-BDAE-6634EFC2CA88}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OLED_I2C_3D_Cube", "..\libraries\OLED_I2C\examples\Arduino\OLED_I2C_3D_Cube\OLED_I2C_3D_Cube.vcxproj", "{CCA56FD6-F78D-48C0-8A39-1CEEFC22DE8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,10 @@ Global
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Debug|x86.Build.0 = Debug|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.ActiveCfg = Release|Win32
 		{C5F80730-F44F-4478-BDAE-6634EFC2CA88}.Release|x86.Build.0 = Release|Win32
+		{CCA56FD6-F78D-48C0-8A39-1CEEFC22DE8F}.Debug|x86.ActiveCfg = Debug|Win32
+		{CCA56FD6-F78D-48C0-8A39-1CEEFC22DE8F}.Debug|x86.Build.0 = Debug|Win32
+		{CCA56FD6-F78D-48C0-8A39-1CEEFC22DE8F}.Release|x86.ActiveCfg = Release|Win32
+		{CCA56FD6-F78D-48C0-8A39-1CEEFC22DE8F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
