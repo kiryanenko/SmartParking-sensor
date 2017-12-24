@@ -20,14 +20,6 @@
 #include "Display.h"
 #include "Payment.h"
 
-#define PARKING_PLACES_COUNT 1
-#define PIN_RESET_LORA 9
-#define PIN_INT_SONAR 3
-
-#define KEYPAD_I2C_ADDR 0x20
-#define KEYPAD_ROWS 4
-#define KEYPAD_COLS 4
-
 
 // Singleton instances
 ReceiverTransmitter *receiverTransmitter;
@@ -40,10 +32,12 @@ void setup()
 {
 	Serial.begin(9600);
 
+#ifdef DEBUG
 	// Установка параметров и запись их в память
 	parameters.setId(1);
 	parameters.setSendingPeriod(2000);
 	parameters.setSensorSamplingPeriod(500);
+#endif
 
 	RadioModule *radioModule = new RadioModule(
 		PIN_RESET_LORA, 
@@ -73,7 +67,8 @@ void setup()
 
 void loop()
 {
-	Serial.println("[DEBUG] LOOP");
+    DEBUG( "LOOP" );
+
 	SonarI2C::doSonar();  // call every cycle, SonarI2C handles the spacing
 	static unsigned long time = millis();
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {

@@ -1,6 +1,5 @@
 #include "Parameters.h"
 
-
 Parameters::Parameters()
 {
 	m_id = EEPROM.readLong(adress_id);

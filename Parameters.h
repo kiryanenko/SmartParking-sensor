@@ -1,5 +1,17 @@
 #pragma once
+
 #include <Arduino-EEPROMEx\EEPROMex.h>
+
+#define PARKING_PLACES_COUNT 1
+#define PIN_RESET_LORA 9
+#define PIN_INT_SONAR 3
+
+#define KEYPAD_I2C_ADDR 0x20
+#define KEYPAD_ROWS 4
+#define KEYPAD_COLS 4
+
+#define DEBUG( msg ) Serial.print("[DEBUG] "); Serial.println( ( msg ) );
+
 
 class Parameters
 {
