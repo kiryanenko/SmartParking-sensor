@@ -30,13 +30,13 @@ void Payment::exec()
             startState(key);
             break;
         case ENTER_PARKING_PLACE:
-            inputState(key, onSuccessInputParkingPlace);
+            inputState(key, &onSuccessInputParkingPlace);
             break;
         case ENTER_TIME:
-            inputState(key, onSuccessInputTime);
+            inputState(key, &onSuccessInputTime);
             break;
         case PAYMENT:
-            inputState(key, onSuccessInputPayment);
+            inputState(key, &onSuccessInputPayment);
             break;
         case SUCCESS_PAYMENT:
             successPaymentState(key);
