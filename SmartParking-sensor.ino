@@ -4,12 +4,11 @@
 #include <SPI.h>
 #include <RadioHead\RH_RF95.h>
 #include <Arduino-EEPROMEx\EEPROMex.h>
-#include <OLED_I2C.h>
 #include <Time\TimeLib.h>
 #include <Time.h>
 #include <DS3232RTC.h>
 #include <i2ckeypad.h>
-#include <OzOLED.h>
+#include <ASOLED.h>
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
 #include "SerialModule.h"
@@ -27,6 +26,7 @@ ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
 Parameters &parameters = Parameters::instance();
 SerialModule serialModule(new ReceiveMessageHandler(parkingPalces, PARKING_PLACES_COUNT));
 Display display;
+Payment payment(&display);
 
 void setup()
 {
@@ -60,6 +60,7 @@ void setup()
 	}
 
     display.init();
+    payment.init();
 
 	delay(300);
 	receiverTransmitter->sendInitStatus(parameters.getId());
@@ -67,7 +68,9 @@ void setup()
 
 void loop()
 {
-    DEBUG( "LOOP" );
+#ifdef DEBUG
+    Serial.println("[DEBUG] LOOP");
+#endif // DEBUG
 
 	SonarI2C::doSonar();  // call every cycle, SonarI2C handles the spacing
 	static unsigned long time = millis();
@@ -80,7 +83,7 @@ void loop()
 	receiverTransmitter->handleRecieveMessages();
 	serialModule.handleRecieveMessages();
 
-    display.draw();
+    payment.exec();
 
 	delay(parameters.getSensorSamplingPeriod());
 }

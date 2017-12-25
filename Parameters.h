@@ -10,7 +10,10 @@
 #define KEYPAD_ROWS 4
 #define KEYPAD_COLS 4
 
-#define DEBUG( msg ) Serial.print("[DEBUG] "); Serial.println( ( msg ) );
+#define TIMEOUT 120000
+#define MSG_SHOW_TIME 5000
+
+#define DEBUG
 
 
 class Parameters
