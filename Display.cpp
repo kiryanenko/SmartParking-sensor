@@ -52,7 +52,7 @@ void Display::showPaymentPage(const float cost)
 void Display::showSuccessPaymentPage(const float change)
 {
     draw();
-    LD.printString_6x8(getFlashStr(PSTR("Оплата произведена.")), 0, 1);
+    LD.printString_6x8(getFlashStr(PSTR("Оплата произведена.")), 0, 0);
     LD.printString_6x8(getFlashStr(PSTR("Сдача: ")), 0, 1);
     LD.printNumber(change, 2, 42, 2);
     LD.printString_6x8(getFlashStr(PSTR("руб")), 109, 2);
