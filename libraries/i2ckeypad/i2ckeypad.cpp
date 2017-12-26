@@ -52,13 +52,13 @@
  *  Default mapping is for sparkfun 4x3 keypad
  */
 
-#define COL0  2  // P2 of PCF8574, col0 is usually pin 3 of 4x3 keypads
-#define COL1  0  // P0 of PCF8574, col1 is usually pin 1 of 4x3 keypads
-#define COL2  4  // P4 of PCF8574, col2 is usually pin 5 of 4x3 keypads
-#define COL3  7  // sorry, don't have a 4x4 keypad to try it
-#define ROW0  1  // P1 of PCF8574, row0 is usually pin 2 of 4x3 keypads
-#define ROW1  6  // P6 of PCF8574, row1 is usually pin 7 of 4x3 keypads
-#define ROW2  5  // P5 of PCF8574, row2 is usually pin 6 of 4x3 keypads
+#define COL0  7  // P4 of PCF8574, col0 is usually pin 3 of 4x3 keypads
+#define COL1  6  // P5 of PCF8574, col1 is usually pin 1 of 4x3 keypads
+#define COL2  5  // P6 of PCF8574, col2 is usually pin 5 of 4x3 keypads
+#define COL3  4  // sorry, don't have a 4x4 keypad to try it
+#define ROW0  0  // P1 of PCF8574, row0 is usually pin 2 of 4x3 keypads
+#define ROW1  1  // P6 of PCF8574, row1 is usually pin 7 of 4x3 keypads
+#define ROW2  2  // P5 of PCF8574, row2 is usually pin 6 of 4x3 keypads
 #define ROW3  3  // P3 of PCF8574, row3 is usually pin 4 of 4x3 keypads
 
 

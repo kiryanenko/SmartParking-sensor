@@ -1,6 +1,7 @@
 #include "Payment.h"
 
 #include "Parameters.h"
+#include "MemUtils.h"
 
 Payment::Payment(Display* display) :
     m_display(display),
@@ -24,8 +25,12 @@ void Payment::exec()
     const auto key = m_keypad.get_key();
     if (key != '\0')
     {
-        switch (m_state)
-        {
+#ifdef DEBUG
+        Serial.print(getFlashStr(PSTR("[DEBUG] Enter key = ")));
+        Serial.println(key);
+#endif
+
+        switch (m_state) {
         case START:
             startState(key);
             break;
@@ -47,17 +52,20 @@ void Payment::exec()
         }
     }
 
-    if (m_state != START && m_state != ERROR && m_timeout.isFinished())
-    {
+    if (m_state == ERROR && m_timeout.isFinished()) {
+        setState(START);
+        m_display->showStartPage();
+    }
+
+    if (m_state != START && m_state != ERROR && m_timeout.isFinished()) {
         setState(ERROR);
-        m_display->showError("“‡ÈÏÓÛÚ.");
+        m_display->showError(PSTR("–¢–∞–π–º–æ—É—Ç."));
     }
 }
 
 void Payment::startState(const char key)
 {
-    if (key == '1')
-    {
+    if (key == '1') {
         setState(ENTER_PARKING_PLACE);
         m_display->showEnterParkingPlacePage();
     }
@@ -77,37 +85,35 @@ void Payment::successPaymentState(char key)
 
 void Payment::inputState(const char key, void (Payment::* onSuccess)())
 {
-    if (key >= '0' && key <= '9')
-    {
+    if (key >= '0' && key <= '9') {
         m_inputStr += key;
         m_display->drawInput(m_inputStr);
-    }
-    else if (key == '*')
-    {
-        if (m_inputStr.length() > 0)
-        {
-            void onSuccess();
-        }
-        else
-        {
+    } else if (key == '*') {
+        if (m_inputStr.length() > 0) {
+#ifdef DEBUG
+            Serial.println(getFlashStr(PSTR("[DEBUG] Success input")));
+#endif
+            (void) (this->*onSuccess)();
+        } else {
             setState(ERROR);
-            m_display->showError("ƒ‡ÌÌ˚Â ÌÂ ‚‚Â‰ÂÌ˚.");
+            m_display->showError(PSTR("–î–∞–Ω–Ω—ã–µ –Ω–µ –≤–≤–µ–¥–µ–Ω—ã."));
         }
-    }
-    else if (key == '#')
-    {
+    } else if (key == '#') {
         setState(ERROR);
-        m_display->showError("œÎ‡ÚÂÊ ÓÚÏÂÌÂÌ.");
+        m_display->showError(PSTR("–ü–ª–∞—Ç–µ–∂ –æ—Ç–º–µ–Ω–µ–Ω."));
     }
 }
 
 void Payment::onSuccessInputParkingPlace()
 {
+#ifdef DEBUG
+    Serial.println(getFlashStr(PSTR("[DEBUG] success input parking place")));
+#endif
+
     m_parkingPlace = atoi(m_inputStr.c_str());
-    if (m_parkingPlace <= 1 || m_parkingPlace >= PARKING_PLACES_COUNT)
-    {
+    if (m_parkingPlace <= 1 || m_parkingPlace >= PARKING_PLACES_COUNT) {
         setState(ERROR);
-        m_display->showError("œ‡ÍÓ‚Í‡ ÌÂ Ì‡È‰ÂÌ‡.");
+        m_display->showError(PSTR("–ü–∞—Ä–∫–æ–≤–∫–∞ –Ω–µ –Ω–∞–π–¥–µ–Ω–∞."));
     }
 
     setState(ENTER_TIME);
@@ -127,7 +133,7 @@ void Payment::onSuccessInputPayment()
     const auto change = payment - m_totalCost;
     if (change < 0) {
         setState(ERROR);
-        m_display->showError("ÕÂ‰ÓÒÚ‡ÚÓ˜ÌÓ ÒÂ‰ÒÚ‚.");
+        m_display->showError(PSTR("–ù–µ–¥–æ—Å—Ç–∞—Ç–æ—á–Ω–æ —Å—Ä–µ–¥—Å—Ç–≤."));
     }
 
     setState(SUCCESS_PAYMENT);

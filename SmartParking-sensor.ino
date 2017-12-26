@@ -9,6 +9,7 @@
 #include <DS3232RTC.h>
 #include <i2ckeypad.h>
 #include <ASOLED.h>
+#include "MemUtils.h"
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
 #include "SerialModule.h"
@@ -36,7 +37,7 @@ void setup()
 	// Установка параметров и запись их в память
 	parameters.setId(1);
 	parameters.setSendingPeriod(2000);
-	parameters.setSensorSamplingPeriod(500);
+	parameters.setSensorSamplingPeriod(100);
 #endif
 
 	RadioModule *radioModule = new RadioModule(
@@ -68,10 +69,6 @@ void setup()
 
 void loop()
 {
-#ifdef DEBUG
-    Serial.println("[DEBUG] LOOP");
-#endif // DEBUG
-
 	SonarI2C::doSonar();  // call every cycle, SonarI2C handles the spacing
 	static unsigned long time = millis();
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {

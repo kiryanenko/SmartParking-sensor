@@ -95,10 +95,14 @@ void Parameters::setDayStartTime(uint16_t time)
 {
 	if (m_dayStartTime != time) {
 		m_dayStartTime = time;
-		EEPROM.write(adress_id, cost);
+		EEPROM.write(adress_id, time);
 	}
 }
 
 void Parameters::setNightStartTime(uint16_t time)
 {
+    if (m_nightStartTime != time) {
+        m_nightStartTime = time;
+        EEPROM.write(adress_id, time);
+    }
 }

@@ -8,7 +8,7 @@ T getReverseData(const void *src)
 	memcpy(&res, src, size);
 	auto p = (uint8_t *) &res;
 	for (size_t i = 0; i < size / 2; ++i) {
-		uint8_t temp = p[i];
+	    const uint8_t temp = p[i];
 		p[i] = p[size - i - 1];
 		p[size - i - 1] = temp;
 	}
@@ -21,4 +21,12 @@ void cpyReverseData(void *dst, const T &data)
 {
 	T reverseData = getReverseData<T>(&data);
 	memcpy(dst, &reverseData, sizeof(T));
+}
+
+
+static const char *getFlashStr(const char *pstr)
+{
+    static char buffer[30];
+    strcpy_P(buffer, pstr);
+    return buffer;
 }
