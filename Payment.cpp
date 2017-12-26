@@ -26,7 +26,7 @@ void Payment::exec()
     if (key != '\0')
     {
 #ifdef DEBUG
-        Serial.print(getFlashStr(PSTR("[DEBUG] Enter key = ")));
+        Serial.print(F("[DEBUG] Enter key = "));
         Serial.println(key);
 #endif
 
@@ -143,8 +143,7 @@ void Payment::onSuccessInputPayment()
 void Payment::setState(const State state)
 {
     m_inputStr = "";
-    switch (state)
-    {
+    switch (state) {
     case ENTER_PARKING_PLACE:
     case ENTER_TIME:
         m_timeout.start(TIMEOUT);

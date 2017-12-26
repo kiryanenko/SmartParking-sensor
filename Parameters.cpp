@@ -5,6 +5,11 @@ Parameters::Parameters()
 	m_id = EEPROM.readLong(adress_id);
 	m_sendingPeriod = EEPROM.readInt(adress_sending_period);
 	m_sensorSamplingPeriod = EEPROM.readInt(adress_sensor_sampling_period);
+
+    m_dayCost = EEPROM.readInt(adress_day_cost);
+    m_nightCost = EEPROM.readInt(adress_night_cost);
+    m_dayStartTime = EEPROM.readInt(adress_day_start_time);
+    m_nightStartTime = EEPROM.readInt(adress_night_start_time);
 }
 
 
@@ -53,56 +58,44 @@ uint16_t Parameters::getNightStartTime() const
 
 void Parameters::setId(const uint32_t id)
 {
-	if (m_id != id) {
-		m_id = id;
-		EEPROM.write(adress_id, id);
-	}
+    save(m_id, id, adress_id);
 }
 
-void Parameters::setSendingPeriod(const uint16_t sendingPeriod)
+void Parameters::setSendingPeriod(const uint16_t period)
 {
-	if (m_sendingPeriod != sendingPeriod) {
-		m_sendingPeriod = sendingPeriod;
-		EEPROM.write(adress_sending_period, sendingPeriod);
-	}
+    save(m_sendingPeriod, period, adress_sending_period);
 }
 
-void Parameters::setSensorSamplingPeriod(const uint16_t samplingPeriod)
+void Parameters::setSensorSamplingPeriod(const uint16_t period)
 {
-	if (m_sendingPeriod != samplingPeriod) {
-		m_sensorSamplingPeriod = samplingPeriod;
-		EEPROM.write(adress_sensor_sampling_period, samplingPeriod);
-	}
+    save(m_sensorSamplingPeriod, period, adress_sensor_sampling_period);
 }
 
-void Parameters::setDayCost(uint16_t cost)
+void Parameters::setDayCost(const uint16_t cost)
 {
-	if (m_dayCost != cost) {
-		m_dayCost = cost;
-		EEPROM.write(adress_id, cost);
-	}
+    save(m_dayCost, cost, adress_day_cost);
 }
 
-void Parameters::setNightCost(uint16_t cost)
+void Parameters::setNightCost(const uint16_t cost)
 {
-	if (m_nightCost != cost) {
-		m_nightCost = cost;
-		EEPROM.write(adress_id, cost);
-	}
+    save(m_nightCost, cost, adress_night_cost);
 }
 
-void Parameters::setDayStartTime(uint16_t time)
+void Parameters::setDayStartTime(const uint16_t time)
 {
-	if (m_dayStartTime != time) {
-		m_dayStartTime = time;
-		EEPROM.write(adress_id, time);
-	}
+    save(m_dayStartTime, time, adress_day_start_time);
 }
 
-void Parameters::setNightStartTime(uint16_t time)
+void Parameters::setNightStartTime(const uint16_t time)
 {
-    if (m_nightStartTime != time) {
-        m_nightStartTime = time;
-        EEPROM.write(adress_id, time);
+    save(m_nightStartTime, time, adress_night_start_time);
+}
+
+template <typename T>
+void Parameters::save(T& field, const T& data, int adress)
+{
+    if (field != data) {
+        field = data;
+        EEPROM.write(adress, data);
     }
 }

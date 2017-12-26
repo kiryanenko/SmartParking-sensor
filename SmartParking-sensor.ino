@@ -39,6 +39,11 @@ void setup()
 	parameters.setId(1);
 	parameters.setSendingPeriod(2000);
 	parameters.setSensorSamplingPeriod(100);
+
+    parameters.setDayCost(10);
+    parameters.setNightCost(20);
+    parameters.setDayStartTime(6 * 60);     // 06:00
+    parameters.setNightStartTime(22 * 60);  // 22:00
 #endif
 
 /* #ifdef DEBUG
