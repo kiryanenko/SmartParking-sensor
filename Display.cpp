@@ -2,6 +2,7 @@
 
 #include <ASOLED.h>
 #include "MemUtils.h"
+#include "Parameters.h"
 
 Display::Display()
 {
@@ -16,6 +17,27 @@ void Display::init()
 {
     LD.init();
     LD.clearDisplay();
+}
+
+void Display::drawClock()
+{
+    String timeStr;
+    if (hour() < 10) {
+        timeStr += '0';
+    }
+    timeStr += hour();
+    timeStr += ':';
+    if (minute() < 10) {
+        timeStr += '0';
+    }
+    timeStr += minute();
+
+#ifdef DEBUG
+    Serial.print(F("[TIME] "));
+    Serial.println(timeStr);
+#endif
+
+    LD.printString_6x8(timeStr.c_str(), 98, 7);
 }
 
 void Display::showStartPage()
@@ -76,14 +98,11 @@ void Display::drawInput(String& inputStr)
 void Display::draw()
 {
     LD.clearDisplay();
+    drawClock();
 }
 
 void Display::showHelp()
 {
     LD.printString_6x8(getFlashStr(PSTR("* - Далее")), 0, 5);
     LD.printString_6x8(getFlashStr(PSTR("# - Отмена")), 0, 6);
-}
-
-void Display::setTime(time_t time)
-{
 }

@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-Timer::Timer()
+Timer::Timer() : m_startTime(0), m_finishTime(0), m_isOverflow(false)
 {
 }
 

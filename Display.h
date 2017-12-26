@@ -5,13 +5,15 @@
 
 class Display
 {
+    time_t m_clock;
+
 public:
     Display();
     ~Display();
 
     void init();
 
-    void setTime(time_t time);
+    void drawClock();
 
     void showStartPage();
     void showEnterParkingPlacePage();

@@ -9,6 +9,7 @@
 #include <DS3232RTC.h>
 #include <i2ckeypad.h>
 #include <ASOLED.h>
+#include <DS3232RTC.h>
 #include "MemUtils.h"
 #include "ParkingPlace.h"
 #include "ReceiverTransmitter.h"
@@ -40,6 +41,20 @@ void setup()
 	parameters.setSensorSamplingPeriod(100);
 #endif
 
+/* #ifdef DEBUG
+    // Установка даты и времени
+    tmElements_t tm;
+    tm.Year = CalendarYrToTm(2017);
+    tm.Month = 12;
+    tm.Day = 27;
+    tm.Hour = 0;
+    tm.Minute = 33;
+    tm.Second = 0;
+    RTC.set(makeTime(tm));
+#endif // DEBUG */
+
+    setSyncProvider(RTC.get);
+
 	RadioModule *radioModule = new RadioModule(
 		PIN_RESET_LORA, 
 		parameters.getSendingPeriod() / PARKING_PLACES_COUNT, 
@@ -47,12 +62,12 @@ void setup()
 	);
 	if (radioModule->init()) {
 		receiverTransmitter = radioModule;
-		Serial.println("[INFO] RF95 init success!");
+		Serial.println(F("[INFO] RF95 init success!"));
 	} else {
-		Serial.println("[WARN] RF95 init failed!");
+		Serial.println(F("[WARN] RF95 init failed!"));
 		delete radioModule;
 		receiverTransmitter = &serialModule;
-		Serial.println("[INFO] Serial module init success!");
+		Serial.println(F("[INFO] Serial module init success!"));
 	}
 	
 	SonarI2C::begin(PIN_INT_SONAR);
@@ -70,10 +85,10 @@ void setup()
 void loop()
 {
 	SonarI2C::doSonar();  // call every cycle, SonarI2C handles the spacing
-	static unsigned long time = millis();
+	static Timer sendingPeriod;
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {
-		if (parkingPalces[i].monitor() || millis() - time > parameters.getSendingPeriod()) {
-			time = millis();
+		if (parkingPalces[i].monitor() || sendingPeriod.isFinished()) {
+            sendingPeriod.start(parameters.getSendingPeriod());
 			receiverTransmitter->sendParkingStatus(parameters.getId(), i, parkingPalces[i].isFree());
 		}
 	}
@@ -81,6 +96,12 @@ void loop()
 	serialModule.handleRecieveMessages();
 
     payment.exec();
+    
+    static Timer sec;
+    if (sec.isFinished()) {
+        sec.start(1000);
+        display.drawClock();
+    }
 
 	delay(parameters.getSensorSamplingPeriod());
 }

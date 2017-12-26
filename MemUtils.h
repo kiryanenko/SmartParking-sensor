@@ -26,7 +26,7 @@ void cpyReverseData(void *dst, const T &data)
 
 static const char *getFlashStr(const char *pstr)
 {
-    static char buffer[30];
+    static char buffer[80];
     strcpy_P(buffer, pstr);
     return buffer;
 }

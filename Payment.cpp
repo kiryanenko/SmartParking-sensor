@@ -91,7 +91,7 @@ void Payment::inputState(const char key, void (Payment::* onSuccess)())
     } else if (key == '*') {
         if (m_inputStr.length() > 0) {
 #ifdef DEBUG
-            Serial.println(getFlashStr(PSTR("[DEBUG] Success input")));
+            Serial.println(F("[DEBUG] Success input"));
 #endif
             (void) (this->*onSuccess)();
         } else {
@@ -107,7 +107,7 @@ void Payment::inputState(const char key, void (Payment::* onSuccess)())
 void Payment::onSuccessInputParkingPlace()
 {
 #ifdef DEBUG
-    Serial.println(getFlashStr(PSTR("[DEBUG] success input parking place")));
+    Serial.println(F("[DEBUG] success input parking place"));
 #endif
 
     m_parkingPlace = atoi(m_inputStr.c_str());

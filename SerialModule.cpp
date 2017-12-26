@@ -32,13 +32,13 @@ byte* SerialModule::recv(size_t &size)
 	size = 0;
 	const auto len = Serial.read();
 
-	Serial.print("[DEBUG] Serial recv, available ");
+	Serial.print(F("[DEBUG] Serial recv, available "));
 	Serial.print(Serial.available());
-	Serial.print(", len = ");
+	Serial.print(F(", len = "));
 	Serial.println(len);
 
 	if (len <= 0) {
-		Serial.print("[ERROR] Serial recv: len < 0");
+		Serial.print(F("[ERROR] Serial recv: len < 0"));
 		return nullptr;
 	}
 
@@ -48,7 +48,7 @@ byte* SerialModule::recv(size_t &size)
 	}
 
 	if (size != len) {
-		Serial.print("[ERROR] Serial recv: readen count != len; readen count = ");
+		Serial.print(F("[ERROR] Serial recv: readen count != len; readen count = "));
 		Serial.println(size);
 
 		delete[] buf;
