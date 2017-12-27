@@ -7,6 +7,7 @@ class ReceiverTransmitter
 {
 	const uint8_t type_of_send_msg_parking_status = 'S';
 	const uint8_t type_of_send_msg_init_status = 'I';
+    const uint8_t type_of_send_msg_payment = 'P';
 
 	const uint8_t type_of_recv_msg_set_id = 'i';
 	const uint8_t type_of_recv_msg_set_sensor_sampling_period = 's';
@@ -35,10 +36,12 @@ public:
 	* \param isFree - свободно ли парковочное место
 	*/
 	void sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree);
+    void sendPayment(const uint32_t id, const uint8_t parkingPlaceId, const uint16_t time, const uint16_t totalCost);
 
 protected:
 	const byte* dataToSendInitStatus(uint32_t id, size_t &bufSize) const;
 	const byte* dataToSendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const;
+    const byte* dataToSendPayment(uint32_t id, uint8_t parkingPlaceId, uint16_t time, uint16_t totalCost, size_t &bufSize) const;
 
 private:
 	void handleRecvMsgSetId(const byte *msg, size_t size);

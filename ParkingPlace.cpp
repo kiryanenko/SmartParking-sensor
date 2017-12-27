@@ -1,4 +1,5 @@
 #include "ParkingPlace.h"
+#include "Parameters.h"
 
 void ParkingPlace::setIsFree(const bool isFree)
 {
@@ -22,7 +23,11 @@ void ParkingPlace::init(const byte id)
 	m_pcf->pinMode(PIN_IS_FREE, OUTPUT);
 	m_pcf->pinMode(PIN_IS_BOOKED, OUTPUT);
 
-	Serial.print("[INFO] Parking place ["); Serial.print(m_id); Serial.println("] init success!");
+#ifdef DEBUG
+	Serial.print(F("[INFO] Parking place [")); 
+    Serial.print(m_id); 
+    Serial.println(F("] init success!"));
+#endif
 	monitor();
 }
 
@@ -37,7 +42,9 @@ ParkingPlace::~ParkingPlace()
 bool ParkingPlace::monitor()
 {
 	const auto dist = m_sensor->cm();
-	Serial.print("[DEBUG] Distance "); Serial.println(dist);
+#ifdef DEBUG
+	Serial.print(F("[DEBUG] Distance ")); Serial.println(dist);
+#endif
 	const auto isFree = dist > CAR_DISTANCE;
 	const auto isChangeState = isFree != m_isFree;
 	setIsFree(isFree);

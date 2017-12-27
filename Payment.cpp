@@ -1,11 +1,13 @@
 #include "Payment.h"
 
+#include <Time.h>
 #include "Parameters.h"
-#include "MemUtils.h"
 
-Payment::Payment(Display* display) :
+Payment::Payment(Display *display, ParkingPlace *parkingPlaces, ReceiverTransmitter *driver) :
     m_display(display),
     m_keypad(KEYPAD_I2C_ADDR, KEYPAD_ROWS, KEYPAD_COLS),
+    m_parkingPlaces(parkingPlaces),
+    m_driver(driver),
     m_state(START)
 {
 }
@@ -55,9 +57,7 @@ void Payment::exec()
     if (m_state == ERROR && m_timeout.isFinished()) {
         setState(START);
         m_display->showStartPage();
-    }
-
-    if (m_state != START && m_state != ERROR && m_timeout.isFinished()) {
+    } else if (m_state != START && m_state != ERROR && m_timeout.isFinished()) {
         setState(ERROR);
         m_display->showError(PSTR("Таймоут."));
     }
@@ -111,9 +111,10 @@ void Payment::onSuccessInputParkingPlace()
 #endif
 
     m_parkingPlace = atoi(m_inputStr.c_str());
-    if (m_parkingPlace <= 1 || m_parkingPlace >= PARKING_PLACES_COUNT) {
+    if (m_parkingPlace < 1 || m_parkingPlace > PARKING_PLACES_COUNT) {
         setState(ERROR);
         m_display->showError(PSTR("Парковка не найдена."));
+        return;
     }
 
     setState(ENTER_TIME);
@@ -122,7 +123,8 @@ void Payment::onSuccessInputParkingPlace()
 
 void Payment::onSuccessInputTime()
 {
-    m_totalCost = countingCost(atoi(m_inputStr.c_str()));
+    m_timeReserve = atoi(m_inputStr.c_str());
+    m_totalCost = countingCost(m_timeReserve);
     setState(PAYMENT);
     m_display->showPaymentPage(m_totalCost);
 }
@@ -131,13 +133,19 @@ void Payment::onSuccessInputPayment()
 {
     const float payment = atoi(m_inputStr.c_str());
     const auto change = payment - m_totalCost;
+
     if (change < 0) {
         setState(ERROR);
         m_display->showError(PSTR("Недостаточно средств."));
+        return;
     }
 
+    auto& params = Parameters::instance();
+    m_driver->sendPayment(params.getId(), m_parkingPlace, m_timeReserve, m_totalCost);
+    m_parkingPlaces[m_parkingPlace - 1].reserve(m_timeReserve * 60);
+
     setState(SUCCESS_PAYMENT);
-    m_display->showSuccessPaymentPage(m_totalCost);
+    m_display->showSuccessPaymentPage(change);
 }
 
 void Payment::setState(const State state)
@@ -161,7 +169,16 @@ void Payment::setState(const State state)
     m_state = state;
 }
 
-float Payment::countingCost(time_t time)
+float Payment::countingCost(const time_t time) const
 {
-    return 123.10;
+    auto& params = Parameters::instance();
+    const uint16_t now = hour() * 60 * 60 + minute() * 60 + second();    // Секунды прошедшие с начала дня
+    uint16_t cost;
+    if (now > params.getDayStartTime() && 
+        (now < params.getNightStartTime() || params.getNightStartTime() < params.getDayStartTime())) {
+        cost = params.getDayCost();
+    } else {
+        cost = params.getNightCost();
+    }
+    return time * cost / 60.0;
 }

@@ -24,8 +24,8 @@ class Parameters
 
     uint16_t m_dayCost; // Дневная тариф
     uint16_t m_nightCost; // Ночная ториф
-    uint16_t m_dayStartTime; // Время (количество минут с 00:00) со скольки включается дневной тариф
-    uint16_t m_nightStartTime; // Время (количество минут с 00:00) со скольки включается ночной тариф
+    uint16_t m_dayStartTime; // Время (количество сек с 00:00) со скольки включается дневной тариф
+    uint16_t m_nightStartTime; // Время (количество сек с 00:00) со скольки включается ночной тариф
 
     const int adress_id = 0;
     const int adress_sensor_sampling_period = adress_id + sizeof(m_id);

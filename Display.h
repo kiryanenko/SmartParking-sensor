@@ -5,8 +5,6 @@
 
 class Display
 {
-    time_t m_clock;
-
 public:
     Display();
     ~Display();

@@ -4,18 +4,23 @@
 #include <i2ckeypad.h>
 #include "Display.h"
 #include "Timer.h"
+#include  "ParkingPlace.h"
+#include  "ReceiverTransmitter.h"
 
 class Payment
 {
     i2ckeypad m_keypad;
-    Display* m_display;
+    Display *m_display;
+
+    ParkingPlace *m_parkingPlaces;
+    ReceiverTransmitter *m_driver;
 
     String m_inputStr;
     Timer m_timeout;
 
     uint8_t m_parkingPlace;
+    uint16_t m_timeReserve;
     float m_totalCost;
-
 
     enum State
     {
@@ -28,7 +33,7 @@ class Payment
     } m_state;
 
 public:
-    Payment(Display* display);
+    Payment(Display* display, ParkingPlace *parkingPlaces, ReceiverTransmitter *driver);
     ~Payment();
 
     void init();
@@ -48,5 +53,5 @@ private:
 
     void setState(State state);
 
-    float countingCost(time_t time);
+    float countingCost(time_t time) const;
 };

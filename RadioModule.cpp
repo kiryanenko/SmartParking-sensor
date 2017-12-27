@@ -32,18 +32,22 @@ bool RadioModule::init()
 
 bool RadioModule::send(const byte *data, size_t size)
 {
-	Serial.print("[DEBUG] SEND DATA: ");
+#ifdef DEBUG
+	Serial.print(F("[DEBUG] SEND DATA: "));
 	for (int i = 0; i < size; ++i) {
 		Serial.print(data[i]);
 		Serial.print(' ');
 	}
 	Serial.println();
+#endif
 
 	m_rf95.send(data, size);
 	const auto isSend = m_rf95.waitPacketSent(m_timeout);
 
 	if (!isSend) {
-		Serial.println("[ERROR] RF95 not send data");
+#ifdef DEBUG
+		Serial.println(F("[ERROR] RF95 not send data"));
+#endif
 		reset();
 	}
 

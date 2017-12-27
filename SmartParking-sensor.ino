@@ -28,7 +28,8 @@ ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
 Parameters &parameters = Parameters::instance();
 SerialModule serialModule(new ReceiveMessageHandler(parkingPalces, PARKING_PLACES_COUNT));
 Display display;
-Payment payment(&display);
+Payment *payment;
+
 
 void setup()
 {
@@ -40,10 +41,10 @@ void setup()
 	parameters.setSendingPeriod(2000);
 	parameters.setSensorSamplingPeriod(100);
 
-    parameters.setDayCost(10);
-    parameters.setNightCost(20);
-    parameters.setDayStartTime(6 * 60);     // 06:00
-    parameters.setNightStartTime(22 * 60);  // 22:00
+    parameters.setDayCost(200);
+    parameters.setNightCost(100);
+    parameters.setDayStartTime(6 * 60 * 60);     // 06:00
+    parameters.setNightStartTime(22 * 60 * 60);  // 22:00
 #endif
 
 /* #ifdef DEBUG
@@ -81,7 +82,9 @@ void setup()
 	}
 
     display.init();
-    payment.init();
+
+    payment = new Payment(&display, parkingPalces, receiverTransmitter);
+    payment->init();
 
 	delay(300);
 	receiverTransmitter->sendInitStatus(parameters.getId());
@@ -100,7 +103,7 @@ void loop()
 	receiverTransmitter->handleRecieveMessages();
 	serialModule.handleRecieveMessages();
 
-    payment.exec();
+    payment->exec();
     
     static Timer sec;
     if (sec.isFinished()) {

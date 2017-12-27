@@ -32,17 +32,17 @@
 ### 4. Забронировать парковочное место
 * **Пакет:**  
     uint32_t ID | uint8_t type | uint8_t placeId | uint16_t period  
-    \x00\x00\x00\x01\x72\x00\x00\x14
+    \x00\x00\x00\x01\x72\x01\x00\x14
 
 * **UART пакет:**  
     uint8_t len | uint32_t ID | uint8_t type | uint8_t placeId | uint16_t period  
-    \x08\x00\x00\x00\x01\x72\x00\x00\x14
+    \x08\x00\x00\x00\x01\x72\x01\x00\x14
 
 ### 5. Отмена бронирования парковочного места
 * **Пакет:**  
     uint32_t ID | uint8_t type | uint8_t placeId  
-    \x00\x00\x00\x01\x63\x00
+    \x00\x00\x00\x01\x63\x01
 
 * **UART пакет:**  
     uint8_t len | uint32_t ID | uint8_t type | uint8_t placeId  
-    \x06\x00\x00\x00\x01\x63\x00
+    \x06\x00\x00\x00\x01\x63\x01

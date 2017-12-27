@@ -35,13 +35,15 @@ void ReceiveMessageHandler::onSetSendingPeriodMsg(const uint16_t period)
 
 void ReceiveMessageHandler::onReserveMsg(const uint8_t parkingPlaceId, const uint16_t time)
 {
-	Serial.print("[DEBUG] Reserve parking place ");
+#ifdef DEBUG
+	Serial.print(F("[DEBUG] Reserve parking place "));
 	Serial.print(parkingPlaceId);
-	Serial.print(" on time ");
+	Serial.print(F(" on time "));
 	Serial.println(time);
+#endif
 
-	if (parkingPlaceId < m_parkingPlacesCount) {
-		m_parkingPlaces[parkingPlaceId].reserve(time);
+	if (parkingPlaceId > 0 && parkingPlaceId <= m_parkingPlacesCount) {
+		m_parkingPlaces[parkingPlaceId - 1].reserve(time);
 	}
 }
 
