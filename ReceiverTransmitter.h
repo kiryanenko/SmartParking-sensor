@@ -1,7 +1,6 @@
 #pragma once
 #include <Arduino.h>
 #include "AbstractReceiveMessageHandler.h"
-#include "Parameters.h"
 
 class ReceiverTransmitter
 {
@@ -9,11 +8,19 @@ class ReceiverTransmitter
 	const uint8_t type_of_send_msg_init_status = 'I';
     const uint8_t type_of_send_msg_payment = 'P';
 
+
 	const uint8_t type_of_recv_msg_set_id = 'i';
 	const uint8_t type_of_recv_msg_set_sensor_sampling_period = 's';
 	const uint8_t type_of_recv_msg_set_sending_period = 'p';
+
 	const uint8_t type_of_recv_msg_reserve = 'r';
 	const uint8_t type_of_recv_msg_cancel_reservation = 'c';
+
+    const uint8_t type_of_recv_msg_set_day_cost = 'q';
+    const uint8_t type_of_recv_msg_set_night_cost = 'w';
+    const uint8_t type_of_recv_msg_set_day_start_time = 'd';
+    const uint8_t type_of_recv_msg_set_night_start_time = 'n';
+
 
 	AbstractReceiveMessageHandler *m_handler;
 
@@ -49,5 +56,10 @@ private:
 	void handleRecvMsgSetSendingPeriod(const byte *msg, size_t size);
 	void handleRecvMsgReserve(const byte *msg, size_t size);
 	void handleRecvMsgCancelReservation(const byte *msg, size_t size);
+
+    void handleRecvMsgSetDayCost(const byte *msg, size_t size);
+    void handleRecvMsgSetNightCost(const byte *msg, size_t size);
+    void handleRecvMsgSetDayStartTime(const byte *msg, size_t size);
+    void handleRecvMsgSetNightStartTime(const byte *msg, size_t size);
 };
 

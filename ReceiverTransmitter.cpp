@@ -57,6 +57,14 @@ void ReceiverTransmitter::handleRecieveMessages()
 					handleRecvMsgReserve(body, bodySize);
 				} else if (type == type_of_recv_msg_cancel_reservation) {
 					handleRecvMsgCancelReservation(body, bodySize);
+				} else if (type == type_of_recv_msg_set_day_cost) {
+					handleRecvMsgSetDayCost(body, bodySize);
+				} else if (type == type_of_recv_msg_set_night_cost) {
+					handleRecvMsgSetNightCost(body, bodySize);
+				} else if (type == type_of_recv_msg_set_day_start_time) {
+                    handleRecvMsgSetDayStartTime(body, bodySize);
+				} else if (type == type_of_recv_msg_set_night_start_time) {
+                    handleRecvMsgSetNightStartTime(body, bodySize);
 				}
 			} else {
 #ifdef DEBUG
@@ -211,4 +219,37 @@ void ReceiverTransmitter::handleRecvMsgCancelReservation(const byte* msg, size_t
 		const auto placeId = getReverseData<uint8_t>(msg);
 		m_handler->onCancelReservationMsg(placeId);
 	}
+}
+
+
+void ReceiverTransmitter::handleRecvMsgSetDayCost(const byte* msg, size_t size)
+{
+    if (size == sizeof(uint16_t)) {
+        const auto cost = getReverseData<uint16_t>(msg);
+        m_handler->onSetDayCost(cost);
+    }
+}
+
+void ReceiverTransmitter::handleRecvMsgSetNightCost(const byte* msg, size_t size)
+{
+    if (size == sizeof(uint16_t)) {
+        const auto cost = getReverseData<uint16_t>(msg);
+        m_handler->onSetNightCost(cost);
+    }
+}
+
+void ReceiverTransmitter::handleRecvMsgSetDayStartTime(const byte* msg, size_t size)
+{
+    if (size == sizeof(uint16_t)) {
+        const auto time = getReverseData<uint16_t>(msg);
+        m_handler->onSetDayStartTime(time);
+    }
+}
+
+void ReceiverTransmitter::handleRecvMsgSetNightStartTime(const byte* msg, size_t size)
+{
+    if (size == sizeof(uint16_t)) {
+        const auto time = getReverseData<uint16_t>(msg);
+        m_handler->onSetNightStartTime(time);
+    }
 }

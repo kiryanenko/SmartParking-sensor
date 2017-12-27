@@ -54,3 +54,27 @@ void ReceiveMessageHandler::onCancelReservationMsg(const uint8_t parkingPlaceId)
 		m_parkingPlaces[parkingPlaceId].cancelReservation();
 	}
 }
+
+void ReceiveMessageHandler::onSetDayCost(const uint16_t cost)
+{
+    auto& params = Parameters::instance();
+    params.setDayCost(cost);
+}
+
+void ReceiveMessageHandler::onSetNightCost(const uint16_t cost)
+{
+    auto& params = Parameters::instance();
+    params.setNightCost(cost);
+}
+
+void ReceiveMessageHandler::onSetDayStartTime(const uint16_t time)
+{
+    auto& params = Parameters::instance();
+    params.setDayStartTime(time);
+}
+
+void ReceiveMessageHandler::onSetNightStartTime(const uint16_t time)
+{
+    auto& params = Parameters::instance();
+    params.setNightStartTime(time);
+}

@@ -19,5 +19,10 @@ public:
 
 	void onReserveMsg(uint8_t parkingPlaceId, uint16_t time) override;
 	void onCancelReservationMsg(uint8_t parkingPlaceId) override;
+
+    void onSetDayCost(uint16_t cost) override;
+    void onSetNightCost(uint16_t cost) override;
+    void onSetDayStartTime(uint16_t time) override;
+    void onSetNightStartTime(uint16_t time) override;
 };
 

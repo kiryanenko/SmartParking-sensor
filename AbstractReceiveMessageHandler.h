@@ -13,5 +13,10 @@ public:
 
 	virtual void onReserveMsg(uint8_t parkingPlaceId, uint16_t time) = 0;
 	virtual void onCancelReservationMsg(uint8_t parkingPlaceId) = 0;
+
+    virtual void onSetDayCost(uint16_t cost) = 0;
+    virtual void onSetNightCost(uint16_t cost) = 0;
+    virtual void onSetDayStartTime(uint16_t time) = 0;
+    virtual void onSetNightStartTime(uint16_t time) = 0;
 };
 
