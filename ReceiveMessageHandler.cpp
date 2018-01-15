@@ -1,5 +1,6 @@
 #include "ReceiveMessageHandler.h"
 
+#include <DS3232RTC.h>
 
 ReceiveMessageHandler::ReceiveMessageHandler(ParkingPlace *parkingPlaces, const uint8_t parkingPlacesCount) :
 	m_parkingPlaces(parkingPlaces), m_parkingPlacesCount(parkingPlacesCount)
@@ -30,6 +31,12 @@ void ReceiveMessageHandler::onSetSendingPeriodMsg(const uint16_t period)
 {
 	auto& params = Parameters::instance();
 	params.setSendingPeriod(period);
+}
+
+void ReceiveMessageHandler::onSetTime(const time_t time)
+{
+    RTC.set(time);
+    setSyncProvider(RTC.get);
 }
 
 

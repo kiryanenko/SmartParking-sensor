@@ -16,6 +16,7 @@ public:
 	void onSetIdMsg(uint32_t id) override;
 	void onSetSamplingPeriodMsg(uint16_t period) override;
 	void onSetSendingPeriodMsg(uint16_t period) override;
+    void onSetTime(time_t time) override;
 
 	void onReserveMsg(uint8_t parkingPlaceId, uint16_t time) override;
 	void onCancelReservationMsg(uint8_t parkingPlaceId) override;

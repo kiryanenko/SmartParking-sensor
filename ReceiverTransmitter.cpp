@@ -53,6 +53,8 @@ void ReceiverTransmitter::handleRecieveMessages()
 					handleRecvMsgSetSamplingPeriod(body, bodySize);
 				} else if (type == type_of_recv_msg_set_sending_period) {
 					handleRecvMsgSetSendingPeriod(body, bodySize);
+                } else if (type == type_of_recv_msg_set_time) {
+                    handleRecvMsgSetTime(body, bodySize);
 				} else if (type == type_of_recv_msg_reserve) {
 					handleRecvMsgReserve(body, bodySize);
 				} else if (type == type_of_recv_msg_cancel_reservation) {
@@ -68,7 +70,7 @@ void ReceiverTransmitter::handleRecieveMessages()
 				}
 			} else {
 #ifdef DEBUG
-				Serial.print("[DEBUG] Msg for other sensor with id = ");
+				Serial.print(F("[DEBUG] Msg for other sensor with id = "));
 				Serial.println(id);
 #endif
 			}
@@ -196,6 +198,15 @@ void ReceiverTransmitter::handleRecvMsgSetSendingPeriod(const byte* msg, size_t 
 		const auto period = getReverseData<uint16_t>(msg);
 		m_handler->onSetSendingPeriodMsg(period);
 	}
+}
+
+
+void ReceiverTransmitter::handleRecvMsgSetTime(const byte* msg, size_t size)
+{
+    if (size == sizeof(uint16_t)) {
+        const auto time = getReverseData<uint32_t>(msg);
+        m_handler->onSetTime(time);
+    }
 }
 
 

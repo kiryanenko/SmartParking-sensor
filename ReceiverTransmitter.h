@@ -12,6 +12,7 @@ class ReceiverTransmitter
 	const uint8_t type_of_recv_msg_set_id = 'i';
 	const uint8_t type_of_recv_msg_set_sensor_sampling_period = 's';
 	const uint8_t type_of_recv_msg_set_sending_period = 'p';
+    const uint8_t type_of_recv_msg_set_time = 't';
 
 	const uint8_t type_of_recv_msg_reserve = 'r';
 	const uint8_t type_of_recv_msg_cancel_reservation = 'c';
@@ -54,6 +55,8 @@ private:
 	void handleRecvMsgSetId(const byte *msg, size_t size);
 	void handleRecvMsgSetSamplingPeriod(const byte *msg, size_t size);
 	void handleRecvMsgSetSendingPeriod(const byte *msg, size_t size);
+    void handleRecvMsgSetTime(const byte *msg, size_t size);
+
 	void handleRecvMsgReserve(const byte *msg, size_t size);
 	void handleRecvMsgCancelReservation(const byte *msg, size_t size);
 
