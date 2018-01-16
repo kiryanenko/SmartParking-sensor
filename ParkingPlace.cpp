@@ -14,7 +14,7 @@ void ParkingPlace::init(const byte id)
 	m_isReserved = false;
 
 	m_pcf = new PCF8574;
-	const auto adress = 0x20 + id;
+	const auto adress = (id < 8 ? 0x20 : 0x38) + id;
 	m_pcf->begin(adress);
 
 	m_sensor = new SonarI2C(adress, PIN_TRIG, 4000);
