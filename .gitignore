@@ -1,7 +1,7 @@
-﻿/SmartParking.vcxproj
+﻿/SmartParking-sensor.vcxproj
 /.vs/*
 /__vm
-/SmartParking.vcxproj.filters
-/SmartParking.sln
+/SmartParking-sensor.vcxproj.filters
+/SmartParking-sensor.sln
 /Debug/*
 /Release/*

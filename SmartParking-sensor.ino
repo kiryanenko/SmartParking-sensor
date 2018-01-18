@@ -97,7 +97,7 @@ void loop()
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {
 		if (parkingPalces[i].monitor() || sendingPeriod.isFinished()) {
             sendingPeriod.start(parameters.getSendingPeriod());
-			receiverTransmitter->sendParkingStatus(parameters.getId(), i, parkingPalces[i].isFree());
+			receiverTransmitter->sendParkingStatus(parameters.getId(), i + 1, parkingPalces[i].isFree());
 		}
 	}
 	receiverTransmitter->handleRecieveMessages();
