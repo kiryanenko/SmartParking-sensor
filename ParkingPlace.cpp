@@ -45,7 +45,7 @@ bool ParkingPlace::monitor()
 #ifdef DEBUG
 	Serial.print(F("[DEBUG] Distance ")); Serial.println(dist);
 #endif
-	const auto isFree = dist > CAR_DISTANCE;
+	const auto isFree = dist > CAR_DISTANCE || dist == 0;
 	const auto isChangeState = isFree != m_isFree;
 	setIsFree(isFree);
 
