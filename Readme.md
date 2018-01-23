@@ -50,19 +50,19 @@
 ### 6. Изменить дневной тариф
 * **Пакет:**  
     uint32_t ID | uint8_t type | uint16_t cost  
-    \x00\x00\x00\x01\x71\x00\xFF
+    \x00\x00\x00\x01\x71\x01\x00
 
 * **UART пакет:**  
     uint8_t len | uint32_t ID | uint8_t type | uint16_t cost  
-    \x07\x00\x00\x00\x01\x71\x00\xff
+    \x07\x00\x00\x00\x01\x71\x01\x00
 	
 ### 7. Изменить ночной тариф
 * **Пакет:**  
     uint32_t ID | uint8_t type | uint16_t cost  
-    \x00\x00\x00\x01\x77\x00\xFF
+    \x00\x00\x00\x01\x77\x01\x00
 
 * **UART пакет:**  
     uint8_t len | uint32_t ID | uint8_t type | uint16_t cost  
-    \x07\x00\x00\x00\x01\x77\x00\xff
+    \x07\x00\x00\x00\x01\x77\x01\x00
 	
 
