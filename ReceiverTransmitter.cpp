@@ -32,11 +32,10 @@ void ReceiverTransmitter::handleRecieveMessages()
 			}
 			Serial.println();
 #endif
-
-			const auto id = getReverseData<uint32_t>(msg);
+            const auto type = msg[0];
+			const auto id = getReverseData<uint32_t>(msg + sizeof type);
 			if (id == Parameters::instance().getId()) {
-				const auto type = msg[sizeof(id)];
-				size_t headerSize = sizeof(id) + sizeof(type);
+				size_t headerSize = sizeof id + sizeof type;
 				size_t bodySize = msgSize - headerSize;
 				auto body = msg + headerSize;
 
