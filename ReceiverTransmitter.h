@@ -5,7 +5,7 @@
 class ReceiverTransmitter
 {
 	const uint8_t type_of_send_msg_parking_status = 'S';
-	const uint8_t type_of_send_msg_init_status = 'I';
+	const uint8_t type_of_send_msg_init = 'I';
     const uint8_t type_of_send_msg_payment = 'P';
 
 
@@ -36,7 +36,14 @@ public:
 
 	void handleRecieveMessages();
 
-	void sendInitStatus(const uint32_t id);
+	void sendInit(
+        const uint32_t id, 
+        const uint16_t samplingPeriod,
+        const uint16_t sendingPeriod,
+        const uint16_t dayCost,
+        const uint16_t nightCost,
+        const uint32_t dayStartTime,
+        const uint32_t nightStartTime);
 	/**
 	* \brief
 	* \param id - идентификатор устройства
@@ -47,7 +54,15 @@ public:
     void sendPayment(const uint32_t id, const uint8_t parkingPlaceId, const uint16_t time, const uint16_t totalCost);
 
 protected:
-	const byte* dataToSendInitStatus(uint32_t id, size_t &bufSize) const;
+	const byte* dataToSendInit(
+        const uint32_t id,
+        const uint16_t samplingPeriod,
+        const uint16_t sendingPeriod,
+        const uint16_t dayCost,
+        const uint16_t nightCost,
+        const uint32_t dayStartTime,
+        const uint32_t nightStartTime, 
+        size_t &bufSize) const;
 	const byte* dataToSendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const;
     const byte* dataToSendPayment(uint32_t id, uint8_t parkingPlaceId, uint16_t time, uint16_t totalCost, size_t &bufSize) const;
 

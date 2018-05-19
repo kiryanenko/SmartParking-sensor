@@ -46,12 +46,12 @@ uint16_t Parameters::getNightCost() const
 	return m_nightCost;
 }
 
-uint16_t Parameters::getDayStartTime() const
+uint32_t Parameters::getDayStartTime() const
 {
 	return m_dayStartTime;
 }
 
-uint16_t Parameters::getNightStartTime() const
+uint32_t Parameters::getNightStartTime() const
 {
 	return m_nightStartTime;
 }
@@ -81,12 +81,12 @@ void Parameters::setNightCost(const uint16_t cost)
     save(m_nightCost, cost, adress_night_cost);
 }
 
-void Parameters::setDayStartTime(const uint16_t time)
+void Parameters::setDayStartTime(const uint32_t time)
 {
     save(m_dayStartTime, time, adress_day_start_time);
 }
 
-void Parameters::setNightStartTime(const uint16_t time)
+void Parameters::setNightStartTime(const uint32_t time)
 {
     save(m_nightStartTime, time, adress_night_start_time);
 }

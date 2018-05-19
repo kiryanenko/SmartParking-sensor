@@ -24,8 +24,8 @@ class Parameters
 
     uint16_t m_dayCost; // Дневная тариф
     uint16_t m_nightCost; // Ночная ториф
-    uint16_t m_dayStartTime; // Время (количество сек с 00:00) со скольки включается дневной тариф
-    uint16_t m_nightStartTime; // Время (количество сек с 00:00) со скольки включается ночной тариф
+    uint32_t m_dayStartTime; // Время (количество сек с 00:00) со скольки включается дневной тариф
+    uint32_t m_nightStartTime; // Время (количество сек с 00:00) со скольки включается ночной тариф
 
     const int adress_id = 0;
     const int adress_sensor_sampling_period = adress_id + sizeof(m_id);
@@ -45,8 +45,8 @@ public:
 
     uint16_t getDayCost() const;
     uint16_t getNightCost() const;
-    uint16_t getDayStartTime() const;
-    uint16_t getNightStartTime() const;
+    uint32_t getDayStartTime() const;
+    uint32_t getNightStartTime() const;
 
     void setId(uint32_t id);
     void setSendingPeriod(uint16_t sendingPeriod);
@@ -54,8 +54,8 @@ public:
 
     void setDayCost(uint16_t cost);
     void setNightCost(uint16_t cost);
-    void setDayStartTime(uint16_t time);
-    void setNightStartTime(uint16_t time);
+    void setDayStartTime(uint32_t time);
+    void setNightStartTime(uint32_t time);
 
 private:
     Parameters();

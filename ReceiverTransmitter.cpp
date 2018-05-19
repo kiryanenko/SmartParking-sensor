@@ -67,6 +67,25 @@ void ReceiverTransmitter::handleRecieveMessages()
 				} else if (type == type_of_recv_msg_set_night_start_time) {
                     handleRecvMsgSetNightStartTime(body, bodySize);
 				}
+
+                if (type == type_of_recv_msg_set_sensor_sampling_period ||
+                    type == type_of_recv_msg_set_sending_period ||
+                    type == type_of_recv_msg_set_time ||
+                    type == type_of_recv_msg_set_day_cost ||
+                    type == type_of_recv_msg_set_night_cost ||
+                    type == type_of_recv_msg_set_day_start_time ||
+                    type == type_of_recv_msg_set_night_start_time) {
+                    Parameters &parameters = Parameters::instance();
+                    sendInit(
+                        parameters.getId(),
+                        parameters.getSensorSamplingPeriod(),
+                        parameters.getSendingPeriod(),
+                        parameters.getDayCost(),
+                        parameters.getNightCost(),
+                        parameters.getDayStartTime(),
+                        parameters.getNightStartTime()
+                    );
+                }
 			} else {
 #ifdef DEBUG
 				Serial.print(F("[DEBUG] Msg for other sensor with id = "));
@@ -79,17 +98,37 @@ void ReceiverTransmitter::handleRecieveMessages()
 }
 
 
-void ReceiverTransmitter::sendInitStatus(const uint32_t id)
+void ReceiverTransmitter::sendInit(
+    const uint32_t id,
+    const uint16_t samplingPeriod,
+    const uint16_t sendingPeriod,
+    const uint16_t dayCost,
+    const uint16_t nightCost,
+    const uint32_t dayStartTime,
+    const uint32_t nightStartTime)
 {
 #ifdef DEBUG
 	Serial.print(F("[SEND] "));
-	Serial.print(type_of_send_msg_init_status);
-	Serial.print(' ');
-	Serial.println(id);
+	Serial.print(type_of_send_msg_init); Serial.print(' ');
+    Serial.print(id); Serial.print(' ');
+    Serial.print(samplingPeriod); Serial.print(' ');
+    Serial.print(sendingPeriod); Serial.print(' ');
+    Serial.print(dayCost); Serial.print(' ');
+    Serial.print(nightCost); Serial.print(' ');
+    Serial.print(dayStartTime); Serial.print(' ');
+	Serial.println(nightStartTime);
 #endif
 
 	size_t bufSize;
-	const auto data = dataToSendInitStatus(id, bufSize);
+	const auto data = dataToSendInit(
+        id, 
+        samplingPeriod,
+        sendingPeriod,
+        dayCost,
+        nightCost,
+        dayStartTime,
+        nightStartTime,
+        bufSize);
 	send(data, bufSize);
 	delete[] data;
 }
@@ -140,12 +179,26 @@ void ReceiverTransmitter::sendPayment(
 }
 
 
-const byte* ReceiverTransmitter::dataToSendInitStatus(const uint32_t id, size_t &bufSize) const
+const byte* ReceiverTransmitter::dataToSendInit(
+    const uint32_t id,
+    const uint16_t samplingPeriod,
+    const uint16_t sendingPeriod,
+    const uint16_t dayCost,
+    const uint16_t nightCost,
+    const uint32_t dayStartTime,
+    const uint32_t nightStartTime, 
+    size_t &bufSize) const
 {
-	bufSize = 1 + 4;
+	bufSize = 1 + 4 + 2 + 2 + 2 + 2 + 4 + 4;
 	const auto dataToSend = new byte[bufSize];
-	cpyReverseData(dataToSend, type_of_send_msg_init_status);
+	cpyReverseData(dataToSend, type_of_send_msg_init);
 	cpyReverseData(dataToSend + 1, id);
+    cpyReverseData(dataToSend + 1 + 4, samplingPeriod);
+    cpyReverseData(dataToSend + 1 + 4 + 2, sendingPeriod);
+    cpyReverseData(dataToSend + 1 + 4 + 2 + 2, dayCost);
+    cpyReverseData(dataToSend + 1 + 4 + 2 + 2 + 2, nightCost);
+    cpyReverseData(dataToSend + 1 + 4 + 2 + 2 + 2 + 2, dayStartTime);
+    cpyReverseData(dataToSend + 1 + 4 + 2 + 2 + 2 + 2 + 4, nightStartTime);
 	return dataToSend;
 }
 

@@ -39,7 +39,7 @@ void setup()
 	// Установка параметров и запись их в память
 	parameters.setId(1);
 	parameters.setSendingPeriod(2000);
-	parameters.setSensorSamplingPeriod(100);
+	parameters.setSensorSamplingPeriod(300);
 
     parameters.setDayCost(200);
     parameters.setNightCost(100);
@@ -87,7 +87,15 @@ void setup()
     payment->init();
 
 	delay(300);
-	receiverTransmitter->sendInitStatus(parameters.getId());
+	receiverTransmitter->sendInit(
+        parameters.getId(),
+        parameters.getSensorSamplingPeriod(),
+        parameters.getSendingPeriod(),
+        parameters.getDayCost(),
+        parameters.getNightCost(),
+        parameters.getDayStartTime(),
+        parameters.getNightStartTime()
+    );
 }
 
 void loop()
