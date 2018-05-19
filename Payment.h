@@ -5,7 +5,7 @@
 #include "Display.h"
 #include "Timer.h"
 #include  "ParkingPlace.h"
-#include  "ReceiverTransmitter.h"
+#include  "Driver.h"
 
 class Payment
 {
@@ -13,7 +13,7 @@ class Payment
     Display *m_display;
 
     ParkingPlace *m_parkingPlaces;
-    ReceiverTransmitter *m_driver;
+    Driver *m_driver;
 
     String m_inputStr;
     Timer m_timeout;
@@ -33,7 +33,7 @@ class Payment
     } m_state;
 
 public:
-    Payment(Display* display, ParkingPlace *parkingPlaces, ReceiverTransmitter *driver);
+    Payment(Display* display, ParkingPlace *parkingPlaces, Driver *driver);
     ~Payment();
 
     void init();

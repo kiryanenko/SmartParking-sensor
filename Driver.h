@@ -2,7 +2,7 @@
 #include <Arduino.h>
 #include "AbstractReceiveMessageHandler.h"
 
-class ReceiverTransmitter
+class Driver
 {
 	const uint8_t type_of_send_msg_parking_status = 'S';
 	const uint8_t type_of_send_msg_init = 'I';
@@ -26,8 +26,8 @@ class ReceiverTransmitter
 	AbstractReceiveMessageHandler *m_handler;
 
 public:
-	explicit ReceiverTransmitter(AbstractReceiveMessageHandler *handler);
-	virtual ~ReceiverTransmitter();
+	explicit Driver(AbstractReceiveMessageHandler *handler);
+	virtual ~Driver();
 
 	virtual bool init();
 	virtual bool send(const byte *data, size_t size) = 0;

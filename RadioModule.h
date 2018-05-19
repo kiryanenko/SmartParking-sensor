@@ -1,11 +1,11 @@
 #pragma once
-#include "ReceiverTransmitter.h"
+#include "Driver.h"
 
 #include <RadioHead\RH_RF95.h>
 
 #define FREQUENCY 868.0
 
-class RadioModule : public ReceiverTransmitter
+class RadioModule : public Driver
 {
 	RH_RF95 m_rf95;
 	int m_pinResetLora;

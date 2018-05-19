@@ -12,7 +12,7 @@
 #include <DS3232RTC.h>
 #include "MemUtils.h"
 #include "ParkingPlace.h"
-#include "ReceiverTransmitter.h"
+#include "Driver.h"
 #include "SerialModule.h"
 #include "RadioModule.h"
 #include "Parameters.h"
@@ -23,7 +23,7 @@
 
 
 // Singleton instances
-ReceiverTransmitter *receiverTransmitter;
+Driver *driver;
 ParkingPlace parkingPalces[PARKING_PLACES_COUNT];
 Parameters &parameters = Parameters::instance();
 SerialModule serialModule(new ReceiveMessageHandler(parkingPalces, PARKING_PLACES_COUNT));
@@ -67,12 +67,12 @@ void setup()
 		new RadioModuleHandler(parkingPalces, PARKING_PLACES_COUNT)
 	);
 	if (radioModule->init()) {
-		receiverTransmitter = radioModule;
+		driver = radioModule;
 		Serial.println(F("[INFO] RF95 init success!"));
 	} else {
 		Serial.println(F("[WARN] RF95 init failed!"));
 		delete radioModule;
-		receiverTransmitter = &serialModule;
+		driver = &serialModule;
 		Serial.println(F("[INFO] Serial module init success!"));
 	}
 	
@@ -83,11 +83,11 @@ void setup()
 
     display.init();
 
-    payment = new Payment(&display, parkingPalces, receiverTransmitter);
+    payment = new Payment(&display, parkingPalces, driver);
     payment->init();
 
 	delay(300);
-	receiverTransmitter->sendInit(
+	driver->sendInit(
         parameters.getId(),
         parameters.getSensorSamplingPeriod(),
         parameters.getSendingPeriod(),
@@ -105,10 +105,10 @@ void loop()
 	for (byte i = 0; i < PARKING_PLACES_COUNT; ++i) {
 		if (parkingPalces[i].monitor() || sendingPeriod.isFinished()) {
             sendingPeriod.start(parameters.getSendingPeriod());
-			receiverTransmitter->sendParkingStatus(parameters.getId(), i + 1, parkingPalces[i].isFree());
+			driver->sendParkingStatus(parameters.getId(), i + 1, parkingPalces[i].isFree());
 		}
 	}
-	receiverTransmitter->handleRecieveMessages();
+	driver->handleRecieveMessages();
 	serialModule.handleRecieveMessages();
 
     payment->exec();

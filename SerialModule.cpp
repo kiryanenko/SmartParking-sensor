@@ -2,7 +2,7 @@
 
 
 SerialModule::SerialModule(AbstractReceiveMessageHandler *handler) :
-	ReceiverTransmitter(handler)
+	Driver(handler)
 {
 }
 

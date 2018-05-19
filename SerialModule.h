@@ -1,8 +1,8 @@
 #pragma once
-#include "ReceiverTransmitter.h"
+#include "Driver.h"
 
 
-class SerialModule : public ReceiverTransmitter
+class SerialModule : public Driver
 {
 public:
 	SerialModule(AbstractReceiveMessageHandler *handler);

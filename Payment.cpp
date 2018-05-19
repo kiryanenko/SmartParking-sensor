@@ -3,7 +3,7 @@
 #include <Time.h>
 #include "Parameters.h"
 
-Payment::Payment(Display *display, ParkingPlace *parkingPlaces, ReceiverTransmitter *driver) :
+Payment::Payment(Display *display, ParkingPlace *parkingPlaces, Driver *driver) :
     m_display(display),
     m_keypad(KEYPAD_I2C_ADDR, KEYPAD_ROWS, KEYPAD_COLS),
     m_parkingPlaces(parkingPlaces),

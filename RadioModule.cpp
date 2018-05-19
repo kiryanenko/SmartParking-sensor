@@ -2,7 +2,7 @@
 
 
 RadioModule::RadioModule(const int pinResetLora, const int timeout, AbstractReceiveMessageHandler *handler) :
-	ReceiverTransmitter(handler)
+	Driver(handler)
 {
 	m_pinResetLora = pinResetLora;
 	m_timeout = timeout;

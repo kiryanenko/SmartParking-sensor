@@ -1,24 +1,24 @@
-#include "ReceiverTransmitter.h"
+#include "Driver.h"
 #include "MemUtils.h"
 #include "Parameters.h"
 
-ReceiverTransmitter::ReceiverTransmitter(AbstractReceiveMessageHandler *handler)
+Driver::Driver(AbstractReceiveMessageHandler *handler)
 {
 	m_handler = handler;
 }
 
 
-ReceiverTransmitter::~ReceiverTransmitter()
+Driver::~Driver()
 {
 }
 
-bool ReceiverTransmitter::init()
+bool Driver::init()
 {
 	return true;
 }
 
 
-void ReceiverTransmitter::handleRecieveMessages()
+void Driver::handleRecieveMessages()
 {
 	while (available()) {
 		size_t msgSize;
@@ -98,7 +98,7 @@ void ReceiverTransmitter::handleRecieveMessages()
 }
 
 
-void ReceiverTransmitter::sendInit(
+void Driver::sendInit(
     const uint32_t id,
     const uint16_t samplingPeriod,
     const uint16_t sendingPeriod,
@@ -134,7 +134,7 @@ void ReceiverTransmitter::sendInit(
 }
 
 
-void ReceiverTransmitter::sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree)
+void Driver::sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree)
 {
 #ifdef DEBUG
 	Serial.print(F("[SEND] "));
@@ -153,7 +153,7 @@ void ReceiverTransmitter::sendParkingStatus(const uint32_t id, const uint8_t par
 	delete[] data;
 }
 
-void ReceiverTransmitter::sendPayment(
+void Driver::sendPayment(
     const uint32_t id, 
     const uint8_t parkingPlaceId, 
     const uint16_t time,
@@ -179,7 +179,7 @@ void ReceiverTransmitter::sendPayment(
 }
 
 
-const byte* ReceiverTransmitter::dataToSendInit(
+const byte* Driver::dataToSendInit(
     const uint32_t id,
     const uint16_t samplingPeriod,
     const uint16_t sendingPeriod,
@@ -202,7 +202,7 @@ const byte* ReceiverTransmitter::dataToSendInit(
 	return dataToSend;
 }
 
-const byte* ReceiverTransmitter::dataToSendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const
+const byte* Driver::dataToSendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const
 {
 	bufSize = 1 + 4 + 1 + 1;
 	const auto dataToSend = new byte[bufSize];
@@ -213,7 +213,7 @@ const byte* ReceiverTransmitter::dataToSendParkingStatus(const uint32_t id, cons
 	return dataToSend;
 }
 
-const byte* ReceiverTransmitter::dataToSendPayment(const uint32_t id, const uint8_t parkingPlaceId, uint16_t time, uint16_t totalCost, size_t &bufSize) const
+const byte* Driver::dataToSendPayment(const uint32_t id, const uint8_t parkingPlaceId, uint16_t time, uint16_t totalCost, size_t &bufSize) const
 {
     bufSize = 1 + 4 + 1 + 2 + 2;
     const auto dataToSend = new byte[bufSize];
@@ -226,7 +226,7 @@ const byte* ReceiverTransmitter::dataToSendPayment(const uint32_t id, const uint
 }
 
 
-void ReceiverTransmitter::handleRecvMsgSetId(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetId(const byte* msg, size_t size)
 {
 	if (size == sizeof(uint32_t)) {
 		const auto id = getReverseData<uint32_t>(msg);
@@ -235,7 +235,7 @@ void ReceiverTransmitter::handleRecvMsgSetId(const byte* msg, size_t size)
 }
 
 
-void ReceiverTransmitter::handleRecvMsgSetSamplingPeriod(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetSamplingPeriod(const byte* msg, size_t size)
 {
 	if (size == sizeof(uint16_t)) {
 		const auto period = getReverseData<uint16_t>(msg);
@@ -244,7 +244,7 @@ void ReceiverTransmitter::handleRecvMsgSetSamplingPeriod(const byte* msg, size_t
 }
 
 
-void ReceiverTransmitter::handleRecvMsgSetSendingPeriod(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetSendingPeriod(const byte* msg, size_t size)
 {
 	if (size == sizeof(uint16_t)) {
 		const auto period = getReverseData<uint16_t>(msg);
@@ -253,7 +253,7 @@ void ReceiverTransmitter::handleRecvMsgSetSendingPeriod(const byte* msg, size_t 
 }
 
 
-void ReceiverTransmitter::handleRecvMsgSetTime(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetTime(const byte* msg, size_t size)
 {
     if (size == sizeof(uint16_t)) {
         const auto time = getReverseData<uint32_t>(msg);
@@ -262,7 +262,7 @@ void ReceiverTransmitter::handleRecvMsgSetTime(const byte* msg, size_t size)
 }
 
 
-void ReceiverTransmitter::handleRecvMsgReserve(const byte* msg, size_t size)
+void Driver::handleRecvMsgReserve(const byte* msg, size_t size)
 {
 #ifdef DEBUG
 	Serial.println(F("[DEBUG] handleRecvMsgReserve"));
@@ -276,7 +276,7 @@ void ReceiverTransmitter::handleRecvMsgReserve(const byte* msg, size_t size)
 }
 
 
-void ReceiverTransmitter::handleRecvMsgCancelReservation(const byte* msg, size_t size)
+void Driver::handleRecvMsgCancelReservation(const byte* msg, size_t size)
 {
 	if (size == sizeof(uint8_t)) {
 		const auto placeId = getReverseData<uint8_t>(msg);
@@ -285,7 +285,7 @@ void ReceiverTransmitter::handleRecvMsgCancelReservation(const byte* msg, size_t
 }
 
 
-void ReceiverTransmitter::handleRecvMsgSetDayCost(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetDayCost(const byte* msg, size_t size)
 {
     if (size == sizeof(uint16_t)) {
         const auto cost = getReverseData<uint16_t>(msg);
@@ -293,7 +293,7 @@ void ReceiverTransmitter::handleRecvMsgSetDayCost(const byte* msg, size_t size)
     }
 }
 
-void ReceiverTransmitter::handleRecvMsgSetNightCost(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetNightCost(const byte* msg, size_t size)
 {
     if (size == sizeof(uint16_t)) {
         const auto cost = getReverseData<uint16_t>(msg);
@@ -301,7 +301,7 @@ void ReceiverTransmitter::handleRecvMsgSetNightCost(const byte* msg, size_t size
     }
 }
 
-void ReceiverTransmitter::handleRecvMsgSetDayStartTime(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetDayStartTime(const byte* msg, size_t size)
 {
     if (size == sizeof(uint16_t)) {
         const auto time = getReverseData<uint16_t>(msg);
@@ -309,7 +309,7 @@ void ReceiverTransmitter::handleRecvMsgSetDayStartTime(const byte* msg, size_t s
     }
 }
 
-void ReceiverTransmitter::handleRecvMsgSetNightStartTime(const byte* msg, size_t size)
+void Driver::handleRecvMsgSetNightStartTime(const byte* msg, size_t size)
 {
     if (size == sizeof(uint16_t)) {
         const auto time = getReverseData<uint16_t>(msg);
