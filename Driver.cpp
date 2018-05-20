@@ -68,6 +68,11 @@ void Driver::handleRecieveMessages()
                     handleRecvMsgSetNightStartTime(body, bodySize);
 				} else if (type == type_of_recv_msg_set_settings) {
                     handleRecvMsgSetSettings(body, bodySize);
+				} else {
+#ifdef DEBUG
+                    Serial.print(F("[ERROR] Undefined msg type: "));
+                    Serial.println(type);
+#endif				
 				}
 
                 if (type == type_of_recv_msg_set_sensor_sampling_period ||
@@ -278,7 +283,7 @@ void Driver::handleRecvMsgSetTime(const byte* msg, size_t size)
 
 void Driver::handleRecvMsgSetSettings(const byte * msg, size_t size)
 {
-    if (size == sizeof(uint8_t) + sizeof(uint32_t)) {
+    if (size == 2 + 2 + 2 + 2 + 4 + 4) {
         const auto samplingPeriod = getReverseData<uint16_t>(msg);
         const auto sandingPeriod = getReverseData<uint16_t>(msg + sizeof(samplingPeriod));
         const auto dayCost = getReverseData<uint16_t>(msg + sizeof(samplingPeriod) + sizeof(sandingPeriod));
