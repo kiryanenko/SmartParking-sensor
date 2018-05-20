@@ -1,36 +1,32 @@
 #include "ReceiveMessageHandler.h"
 
 #include <DS3232RTC.h>
+#include "Parameters.h"
 
-ReceiveMessageHandler::ReceiveMessageHandler(ParkingPlace *parkingPlaces, const uint8_t parkingPlacesCount) :
-	m_parkingPlaces(parkingPlaces), m_parkingPlacesCount(parkingPlacesCount)
-{
-}
-
-
-ReceiveMessageHandler::~ReceiveMessageHandler()
+ReceiveMessageHandler::ReceiveMessageHandler(ParkingPlace* parkingPlaces, const uint8_t parkingPlacesCount) :
+    m_parkingPlaces(parkingPlaces), m_parkingPlacesCount(parkingPlacesCount)
 {
 }
 
 
 void ReceiveMessageHandler::onSetIdMsg(const uint32_t id)
 {
-	auto& params = Parameters::instance();
-	params.setId(id);
+    auto& params = Parameters::instance();
+    params.setId(id);
 }
 
 
 void ReceiveMessageHandler::onSetSamplingPeriodMsg(const uint16_t period)
 {
-	auto& params = Parameters::instance();
-	params.setSensorSamplingPeriod(period);
+    auto& params = Parameters::instance();
+    params.setSensorSamplingPeriod(period);
 }
 
 
 void ReceiveMessageHandler::onSetSendingPeriodMsg(const uint16_t period)
 {
-	auto& params = Parameters::instance();
-	params.setSendingPeriod(period);
+    auto& params = Parameters::instance();
+    params.setSendingPeriod(period);
 }
 
 void ReceiveMessageHandler::onSetTime(const time_t time)
@@ -40,26 +36,28 @@ void ReceiveMessageHandler::onSetTime(const time_t time)
 }
 
 
-void ReceiveMessageHandler::onReserveMsg(const uint8_t parkingPlaceId, const uint16_t time)
+void ReceiveMessageHandler::onReserveMsg(const uint8_t parkingPlaceId, const uint32_t time)
 {
 #ifdef DEBUG
-	Serial.print(F("[DEBUG] Reserve parking place "));
-	Serial.print(parkingPlaceId);
-	Serial.print(F(" on time "));
-	Serial.println(time);
+    Serial.print(F("[DEBUG] Reserve parking place "));
+    Serial.print(parkingPlaceId);
+    Serial.print(F(" on time "));
+    Serial.println(time);
 #endif
 
-	if (parkingPlaceId > 0 && parkingPlaceId <= m_parkingPlacesCount) {
-		m_parkingPlaces[parkingPlaceId - 1].reserve(time);
-	}
+    if (parkingPlaceId > 0 && parkingPlaceId <= m_parkingPlacesCount)
+    {
+        m_parkingPlaces[parkingPlaceId - 1].reserve(time);
+    }
 }
 
 
 void ReceiveMessageHandler::onCancelReservationMsg(const uint8_t parkingPlaceId)
 {
-	if (parkingPlaceId < m_parkingPlacesCount) {
-		m_parkingPlaces[parkingPlaceId].cancelReservation();
-	}
+    if (parkingPlaceId < m_parkingPlacesCount)
+    {
+        m_parkingPlaces[parkingPlaceId].cancelReservation();
+    }
 }
 
 void ReceiveMessageHandler::onSetDayCost(const uint16_t cost)

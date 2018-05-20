@@ -141,7 +141,7 @@ void Payment::onSuccessInputPayment()
     }
 
     auto& params = Parameters::instance();
-    m_driver->sendPayment(params.getId(), m_parkingPlace, m_timeReserve, m_totalCost);
+    m_driver->sendPayment(params.getId(), m_parkingPlace, m_timeReserve, payment, m_totalCost);
     m_parkingPlaces[m_parkingPlace - 1].reserve(m_timeReserve * 60);
 
     setState(SUCCESS_PAYMENT);

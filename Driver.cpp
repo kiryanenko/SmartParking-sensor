@@ -156,7 +156,8 @@ void Driver::sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, 
 void Driver::sendPayment(
     const uint32_t id, 
     const uint8_t parkingPlaceId, 
-    const uint16_t time,
+    const uint32_t time,
+    const uint16_t payment,
     const uint16_t totalCost)
 {
 #ifdef DEBUG
@@ -173,7 +174,7 @@ void Driver::sendPayment(
 #endif
 
     size_t bufSize;
-    const auto data = dataToSendPayment(id, parkingPlaceId, time, totalCost,  bufSize);
+    const auto data = dataToSendPayment(id, parkingPlaceId, time, payment, totalCost,  bufSize);
     send(data, bufSize);
     delete[] data;
 }
@@ -202,7 +203,11 @@ const byte* Driver::dataToSendInit(
 	return dataToSend;
 }
 
-const byte* Driver::dataToSendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const
+const byte* Driver::dataToSendParkingStatus(
+    const uint32_t id, 
+    const uint8_t parkingPlaceId, 
+    const bool isFree,
+    size_t& bufSize) const
 {
 	bufSize = 1 + 4 + 1 + 1;
 	const auto dataToSend = new byte[bufSize];
@@ -213,15 +218,22 @@ const byte* Driver::dataToSendParkingStatus(const uint32_t id, const uint8_t par
 	return dataToSend;
 }
 
-const byte* Driver::dataToSendPayment(const uint32_t id, const uint8_t parkingPlaceId, uint16_t time, uint16_t totalCost, size_t &bufSize) const
+const byte* Driver::dataToSendPayment(
+    const uint32_t id, 
+    const uint8_t parkingPlaceId,
+    const uint32_t time,
+    const uint16_t payment,
+    const uint16_t totalCost, 
+    size_t &bufSize) const
 {
-    bufSize = 1 + 4 + 1 + 2 + 2;
+    bufSize = 1 + 4 + 1 + 4 + 2 + 2;
     const auto dataToSend = new byte[bufSize];
     cpyReverseData(dataToSend, type_of_send_msg_payment);
     cpyReverseData(dataToSend + 1, id);
     cpyReverseData(dataToSend + 1 + 4, parkingPlaceId);
     cpyReverseData(dataToSend + 1 + 4 + 1, time);
-    cpyReverseData(dataToSend + 1 + 4 + 1 + 2, totalCost);
+    cpyReverseData(dataToSend + 1 + 4 + 1 + 4, payment);
+    cpyReverseData(dataToSend + 1 + 4 + 1 + 4 + 2, totalCost);
     return dataToSend;
 }
 
@@ -268,9 +280,9 @@ void Driver::handleRecvMsgReserve(const byte* msg, size_t size)
 	Serial.println(F("[DEBUG] handleRecvMsgReserve"));
 #endif
 
-	if (size == sizeof(uint8_t) + sizeof(uint16_t)) {
+	if (size == sizeof(uint8_t) + sizeof(uint32_t)) {
 		const auto placeId = getReverseData<uint8_t>(msg);
-		const auto time = getReverseData<uint16_t>(msg + sizeof(placeId));
+		const auto time = getReverseData<uint32_t>(msg + sizeof(placeId));
 		m_handler->onReserveMsg(placeId, time);
 	}
 }

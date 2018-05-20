@@ -37,34 +37,32 @@ public:
 	void handleRecieveMessages();
 
 	void sendInit(
-        const uint32_t id, 
-        const uint16_t samplingPeriod,
-        const uint16_t sendingPeriod,
-        const uint16_t dayCost,
-        const uint16_t nightCost,
-        const uint32_t dayStartTime,
-        const uint32_t nightStartTime);
+	    uint32_t id,
+	    uint16_t samplingPeriod,
+	    uint16_t sendingPeriod,
+	    uint16_t dayCost,
+	    uint16_t nightCost,
+	    uint32_t dayStartTime,
+	    uint32_t nightStartTime);
 	/**
 	* \brief
 	* \param id - идентификатор устройства
 	* \param parkingPlaceId - номер парковочного места
 	* \param isFree - свободно ли парковочное место
 	*/
-	void sendParkingStatus(const uint32_t id, const uint8_t parkingPlaceId, const bool isFree);
-    void sendPayment(const uint32_t id, const uint8_t parkingPlaceId, const uint16_t time, const uint16_t totalCost);
+	void sendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree);
+    void sendPayment(uint32_t id, uint8_t parkingPlaceId, uint32_t time, uint16_t payment, uint16_t totalCost);
 
 protected:
 	const byte* dataToSendInit(
-        const uint32_t id,
-        const uint16_t samplingPeriod,
-        const uint16_t sendingPeriod,
-        const uint16_t dayCost,
-        const uint16_t nightCost,
-        const uint32_t dayStartTime,
-        const uint32_t nightStartTime, 
+	    uint32_t id,
+	    uint16_t samplingPeriod, uint16_t sendingPeriod,
+	    uint16_t dayCost, uint16_t nightCost,
+	    uint32_t dayStartTime, uint32_t nightStartTime, 
         size_t &bufSize) const;
 	const byte* dataToSendParkingStatus(uint32_t id, uint8_t parkingPlaceId, bool isFree, size_t &bufSize) const;
-    const byte* dataToSendPayment(uint32_t id, uint8_t parkingPlaceId, uint16_t time, uint16_t totalCost, size_t &bufSize) const;
+    const byte* dataToSendPayment(uint32_t id, uint8_t parkingPlaceId, uint32_t time, uint16_t payment,
+                                  uint16_t totalCost, size_t& bufSize) const;
 
 private:
 	void handleRecvMsgSetId(const byte *msg, size_t size);

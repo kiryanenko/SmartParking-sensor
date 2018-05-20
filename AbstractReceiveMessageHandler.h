@@ -13,7 +13,7 @@ public:
 	virtual void onSetSendingPeriodMsg(uint16_t period) = 0;
     virtual void onSetTime(time_t time) = 0;
 
-	virtual void onReserveMsg(uint8_t parkingPlaceId, uint16_t time) = 0;
+	virtual void onReserveMsg(uint8_t parkingPlaceId, uint32_t time) = 0;
 	virtual void onCancelReservationMsg(uint8_t parkingPlaceId) = 0;
 
     virtual void onSetDayCost(uint16_t cost) = 0;
