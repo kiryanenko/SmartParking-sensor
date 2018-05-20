@@ -46,7 +46,7 @@ bool RadioModule::send(const byte *data, size_t size)
 
 	if (!isSend) {
 #ifdef DEBUG
-		Serial.println(F("[ERROR] RF95 not send data"));
+		Serial.println(F("[ERROR] RF95 do not send data"));
 #endif
 		reset();
 	}
@@ -63,8 +63,8 @@ bool RadioModule::available()
 
 byte* RadioModule::recv(size_t &size)
 {
-	uint8_t *buf = new uint8_t[RH_RF95_MAX_MESSAGE_LEN];
-	uint8_t len = sizeof(buf);
+    auto buf = new uint8_t[RH_RF95_MAX_MESSAGE_LEN];
+	uint8_t len = RH_RF95_MAX_MESSAGE_LEN;
 	if (!m_rf95.recv(buf, &len)) {
 		delete[] buf;
 		size = 0;

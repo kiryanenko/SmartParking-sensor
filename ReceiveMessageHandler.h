@@ -24,4 +24,6 @@ public:
     void onSetNightCost(uint16_t cost) override;
     void onSetDayStartTime(uint16_t time) override;
     void onSetNightStartTime(uint16_t time) override;
+    void onSetSettings(uint16_t samplingPeriod, uint16_t sendingPeriod, uint16_t dayCost, uint16_t nightCost,
+        uint32_t dayStartTime, uint32_t nightStartTime) override;
 };

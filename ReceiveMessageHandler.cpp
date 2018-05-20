@@ -83,3 +83,17 @@ void ReceiveMessageHandler::onSetNightStartTime(const uint16_t time)
     auto& params = Parameters::instance();
     params.setNightStartTime(time);
 }
+
+void ReceiveMessageHandler::onSetSettings(const uint16_t samplingPeriod, const uint16_t sendingPeriod,
+                                          const uint16_t dayCost, const uint16_t nightCost,
+                                          const uint32_t dayStartTime, const uint32_t nightStartTime)
+{
+    auto& params = Parameters::instance();
+    params.setSensorSamplingPeriod(samplingPeriod);
+    params.setSensorSamplingPeriod(sendingPeriod);
+    params.setDayCost(dayCost);
+    params.setNightCost(nightCost);
+    params.setDayStartTime(dayStartTime);
+    params.setNightStartTime(nightStartTime);
+    params.setNightStartTime(nightStartTime);
+}

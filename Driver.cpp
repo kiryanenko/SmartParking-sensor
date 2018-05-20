@@ -25,7 +25,7 @@ void Driver::handleRecieveMessages()
 		const byte *msg = recv(msgSize);
 		if (msg) {
 #ifdef DEBUG
-			Serial.print(F("[DEBUG] Recv msg: "));
+			Serial.print(F("[DEBUG] Recv msg[")); Serial.print(msgSize); Serial.print(F("]: "));
 			for (size_t i = 0; i < msgSize; ++i) {
 				Serial.print(msg[i]);
 				Serial.print(' ');
@@ -66,6 +66,8 @@ void Driver::handleRecieveMessages()
                     handleRecvMsgSetDayStartTime(body, bodySize);
 				} else if (type == type_of_recv_msg_set_night_start_time) {
                     handleRecvMsgSetNightStartTime(body, bodySize);
+				} else if (type == type_of_recv_msg_set_settings) {
+                    handleRecvMsgSetSettings(body, bodySize);
 				}
 
                 if (type == type_of_recv_msg_set_sensor_sampling_period ||
@@ -74,8 +76,9 @@ void Driver::handleRecieveMessages()
                     type == type_of_recv_msg_set_day_cost ||
                     type == type_of_recv_msg_set_night_cost ||
                     type == type_of_recv_msg_set_day_start_time ||
-                    type == type_of_recv_msg_set_night_start_time) {
-                    Parameters &parameters = Parameters::instance();
+                    type == type_of_recv_msg_set_night_start_time ||
+                    type == type_of_recv_msg_set_settings) {
+                    auto& parameters = Parameters::instance();
                     sendInit(
                         parameters.getId(),
                         parameters.getSensorSamplingPeriod(),
@@ -273,11 +276,26 @@ void Driver::handleRecvMsgSetTime(const byte* msg, size_t size)
     }
 }
 
+void Driver::handleRecvMsgSetSettings(const byte * msg, size_t size)
+{
+    if (size == sizeof(uint8_t) + sizeof(uint32_t)) {
+        const auto samplingPeriod = getReverseData<uint16_t>(msg);
+        const auto sandingPeriod = getReverseData<uint16_t>(msg + sizeof(samplingPeriod));
+        const auto dayCost = getReverseData<uint16_t>(msg + sizeof(samplingPeriod) + sizeof(sandingPeriod));
+        const auto nightCost = getReverseData<uint16_t>(msg + sizeof(samplingPeriod) + sizeof(sandingPeriod) + sizeof(dayCost));
+        const auto dayStartTime = getReverseData<uint32_t>(msg + sizeof(samplingPeriod) + sizeof(sandingPeriod) + 
+            sizeof(dayCost) + sizeof(nightCost));
+        const auto nightStartTime = getReverseData<uint32_t>(msg + sizeof(samplingPeriod) + sizeof(sandingPeriod) +
+            sizeof(dayCost) + sizeof(nightCost) + sizeof(dayStartTime));
+        m_handler->onSetSettings(samplingPeriod, sandingPeriod, dayCost, nightCost, dayStartTime, nightStartTime);
+    }
+}
+
 
 void Driver::handleRecvMsgReserve(const byte* msg, size_t size)
 {
 #ifdef DEBUG
-	Serial.println(F("[DEBUG] handleRecvMsgReserve"));
+	Serial.println(F("[DEBUG] Handle recv msg reserve"));
 #endif
 
 	if (size == sizeof(uint8_t) + sizeof(uint32_t)) {
