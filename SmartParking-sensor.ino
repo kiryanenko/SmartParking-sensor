@@ -39,7 +39,7 @@ void setup()
 	// Установка параметров и запись их в память
 	parameters.setId(1);
 	parameters.setSendingPeriod(2000);
-	parameters.setSensorSamplingPeriod(300);
+	parameters.setSensorSamplingPeriod(200);
 
     parameters.setDayCost(200);
     parameters.setNightCost(100);

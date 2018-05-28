@@ -123,7 +123,7 @@ void Payment::onSuccessInputParkingPlace()
 
 void Payment::onSuccessInputTime()
 {
-    m_timeReserve = atoi(m_inputStr.c_str());
+    m_timeReserve = atoi(m_inputStr.c_str()) * 60;
     m_totalCost = countingCost(m_timeReserve);
     setState(PAYMENT);
     m_display->showPaymentPage(m_totalCost);
@@ -180,5 +180,5 @@ float Payment::countingCost(const time_t time) const
     } else {
         cost = params.getNightCost();
     }
-    return time * cost / 60.0;
+    return time * cost / 3600.0;
 }

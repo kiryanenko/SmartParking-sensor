@@ -63,7 +63,7 @@ bool ParkingPlace::isFree() const
 }
 
 
-void ParkingPlace::reserve(const uint16_t time)
+void ParkingPlace::reserve(const uint32_t time)
 {
     m_reservationTimer.start(time * 1000);
 	setReserve(true);

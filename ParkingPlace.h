@@ -32,7 +32,7 @@ public:
 	bool monitor();
 	bool isFree() const;
 
-	void reserve(uint16_t time);
+	void reserve(uint32_t time);
 	void cancelReservation();
 
 private:
