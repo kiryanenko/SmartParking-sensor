@@ -65,7 +65,7 @@
     uint8_t len | uint32_t ID | uint8_t type | uint16_t cost  
     \x07\x00\x00\x00\x01\x77\x01\x00
     
-### Изменить настроечные параметры
+### 8. Изменить настроечные параметры
 * **Пакет:**  
     uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
     \x73\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
@@ -76,7 +76,7 @@
 	
 Отправляемы сообщения:
 -----------------------------
-### Инициализация
+### 1. Инициализация
 * **Пакет:**  
     uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
     \x49\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
@@ -85,7 +85,7 @@
     uint8_t len | uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
     \x15\x49\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
 
-### Состояние парковки
+### 2. Состояние парковки
 * **Пакет:**  
     uint8_t type | uint32_t ID | uint8_t placeId | uint8_t free  
     \x53\x00\x00\x00\x01\x01\x01
@@ -94,7 +94,7 @@
     uint8_t len | uint8_t type | uint32_t ID | uint8_t placeId | uint8_t free  
     \x07\x53\x00\x00\x00\x01\x01\x01
     
-### Оплата бронирования
+### 3. Оплата бронирования
 * **Пакет:**  
     uint8_t type | uint32_t ID | uint8_t placeId | uint32_t time | uint16_t payment | uint16_t totalCost  
     \x50\x00\x00\x00\x01\x01\x00\x00\x00\xFF\x00\xFF\x00\xFF
