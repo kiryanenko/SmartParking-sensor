@@ -43,8 +43,8 @@ void setup()
 
     parameters.setDayCost(200);
     parameters.setNightCost(100);
-    parameters.setDayStartTime(6 * 60 * 60);     // 06:00
-    parameters.setNightStartTime(22 * 60 * 60);  // 22:00
+    parameters.setDayStartTime(21600);      // 06:00
+    parameters.setNightStartTime(82800);    // 23:00
 #endif
 
 /* #ifdef DEBUG

@@ -19,7 +19,7 @@ class Payment
     Timer m_timeout;
 
     uint8_t m_parkingPlace;
-    uint16_t m_timeReserve;
+    time_t m_timeReserve;
     float m_totalCost;
 
     enum State

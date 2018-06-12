@@ -172,9 +172,14 @@ void Payment::setState(const State state)
 float Payment::countingCost(const time_t time) const
 {
     auto& params = Parameters::instance();
-    const uint16_t now = hour() * 60 * 60 + minute() * 60 + second();    // Секунды прошедшие с начала дня
+    const auto now = static_cast<time_t>(hour()) * 60 * 60 + minute() * 60 + second();    // Секунды прошедшие с начала дня
+#ifdef DEBUG
+    Serial.print(F("[DEBUG] Now=")); Serial.print(now); 
+    Serial.print(F(" DayStartTime=")); Serial.print(params.getDayStartTime()); 
+    Serial.print(F(" NightStartTime=")); Serial.print(params.getNightStartTime());
+#endif
     uint16_t cost;
-    if (now > params.getDayStartTime() && 
+    if (now >= params.getDayStartTime() && 
         (now < params.getNightStartTime() || params.getNightStartTime() < params.getDayStartTime())) {
         cost = params.getDayCost();
     } else {
