@@ -3,8 +3,7 @@
 МК-подсистема регистрации свободных парковочных мест
 ----------------------------------------------------
 
-АННОТАЦИЯ
----------
+### АННОТАЦИЯ
 
 Дипломный проект посвящен разработке системы мониторинга парковочных
 мест. При выполнении дипломного проекта, было проведено исследование IoT
@@ -17,8 +16,7 @@
 пользователям (водителям) в режиме реального времени получать актуальную
 информацию о состоянии парковочных мест.
 
-ABSTRACT
---------
+### ABSTRACT
 
 The diploma project is devoted to the development of a monitoring system
 for parking places. When carrying out the diploma project, was conducted
@@ -1067,22 +1065,30 @@ USB-разъем, помимо предоставления интерфейса
     6.  4 байта - Время начала ночного тарифа
     
     * **Пакет:**  
+        ```
         uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
         \x49\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
-    * **UART пакет:**  
+        ```
+    * **UART пакет:**
+        ```
         uint8_t len | uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
         \x15\x49\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
+        ```
 
 -   Состояние парковочного места:
     1.  1 байт - Идентификатор парковочного места
     2.  1 байт - Булевое значение свободно ли парковочное место
 
     * **Пакет:**  
+        ```
         uint8_t type | uint32_t ID | uint8_t placeId | uint8_t free  
         \x53\x00\x00\x00\x01\x01\x01
+        ```
     * **UART пакет:**  
-        uint8_t len | uint8_t type | uint32_t ID | uint8_t placeId | uint8_t free  
+        ```
+        uint8_t len | uint8_t type | uint32_t ID | uint8_t placeId | uint8_t free
         \x07\x53\x00\x00\x00\x01\x01\x01
+        ```
 
 -   Оплата парковочного места:
     1.  1 байт - Идентификатор парковочного места
@@ -1091,41 +1097,56 @@ USB-разъем, помимо предоставления интерфейса
     5.  2 байта - Итоговая стоимость
     
     * **Пакет:**  
-        uint8_t type | uint32_t ID | uint8_t placeId | uint32_t time | uint16_t payment | uint16_t totalCost  
+        ```
+        uint8_t type | uint32_t ID | uint8_t placeId | uint32_t time | uint16_t payment | uint16_t totalCost
         \x50\x00\x00\x00\x01\x01\x00\x00\x00\xFF\x00\xFF\x00\xFF
+        ```
     * **UART пакет:**  
-        uint8_t len | uint8_t type | uint32_t ID | uint8_t placeId | uint32_t time | uint16_t payment | uint16_t totalCost  
+        ```
+        uint8_t len | uint8_t type | uint32_t ID | uint8_t placeId | uint32_t time | uint16_t payment | uint16_t totalCost
         \x0E\x50\x00\x00\x00\x01\x01\x00\x00\x00\xFF\x00\xFF\x00\xFF
+        ```
 
 Структура тела сообщения для основных типов принимаемых сообщений:
 
 -   Изменить идентификатор МКПРСПМ.
-
     1.  4 байта - Новый идентификатор МКПРСПМ
     
     * **Пакет:**  
-        uint32_t ID | uint8_t type | uint32_t newID  
-        \x00\x00\x00\x01\x69\x00\x00\x00\x02
+        ```
+        uint32_t ID | uint8_t type | uint32_t newID`  
+        \x00\x00\x00\x01\x69\x00\x00\x00\x02`
+        ```
     * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint32_t newID  
-        \x09\x00\x00\x00\x01\x69\x00\x00\x00\x02
-            
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint32_t newID`  
+        \x09\x00\x00\x00\x01\x69\x00\x00\x00\x02`
+        ```
+    
 -   Изменить период опроса сенсоров
     * **Пакет:**  
-        uint32_t ID | uint8_t type | uint16_t period  
+        ```
+        uint32_t ID | uint8_t type | uint16_t period
         \x00\x00\x00\x01\x73\x00\x64
+        ```
     * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint16_t  
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint16_t
         \x07\x00\x00\x00\x01\x73\x00\x64
+        ```
 
 -   Изменить период отправки сообщений о состоянии парковочного места:
     1.  2 байт - Период отправки сообщений о состоянии парковочного места
-    * **Пакет:**  
-        uint32_t ID | uint8_t type | uint16_t period  
+    * **Пакет:**
+        ```
+        uint32_t ID | uint8_t type | uint16_t period 
         \x00\x00\x00\x01\x70\x03\x00
+        ```
     * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint16_t period  
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint16_t period
         \x07\x00\x00\x00\x01\x70\x03\x00
+        ```
 
 -   Изменить время на часах реального времени:
     1.  4 байта - Время
@@ -1134,19 +1155,27 @@ USB-разъем, помимо предоставления интерфейса
     1.  2 байта - Стоимость 1 часа в рублях
     
     * **Пакет:**  
-        uint32_t ID | uint8_t type | uint16_t cost  
+        ```
+        uint32_t ID | uint8_t type | uint16_t cost
         \x00\x00\x00\x01\x71\x01\x00
-    * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint16_t cost  
+        ```
+    * **UART пакет:**
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint16_t cost
         \x07\x00\x00\x00\x01\x71\x01\x00
+        ```
 
 - Изменить ночной тариф
     * **Пакет:**  
-        uint32_t ID | uint8_t type | uint16_t cost  
+        ```
+        uint32_t ID | uint8_t type | uint16_t cost
         \x00\x00\x00\x01\x77\x01\x00
+        ```
     * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint16_t cost  
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint16_t cost
         \x07\x00\x00\x00\x01\x77\x01\x00
+        ```
         
 -   Изменить параметры настройки
     1.  2 байта - Период опроса датчиков
@@ -1155,33 +1184,46 @@ USB-разъем, помимо предоставления интерфейса
     4.  2 байта - Ночной тариф
     5.  4 байта - Время начала дневного тарифа
     6.  4 байта - Время начала ночного тарифа
+    
     * **Пакет:**  
+        ```
         uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
         \x73\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
+        ```
     * **UART пакет:**  
+        ```
         uint8_t len | uint8_t type | uint32_t ID | uint16_t samplingPeriod | uint16_t sendingPeriod | uint16_t dayCost | uint16_t nightCost | uint32_t dayStartTime | uint32_t nightStartTime
         \x15\x73\x00\x00\x00\x01\x00\xFF\x10\x00\x00\xFF\x00\xFF\x00\x00\x00\xFF\x00\x00\x00\xFF
+        ```
 
 -   Бронирование парковочного места
     1.  1 байт - Идентификатор парковочного места
     2.  2 байта - Время бронирования
     
     * **Пакет:**  
-        uint32_t ID | uint8_t type | uint8_t placeId | uint32_t period  
+        ```
+        uint32_t ID | uint8_t type | uint8_t placeId | uint32_t period 
         \x72\x00\x00\x00\x01\x01\x00\x00\x00\x14
+        ```
     * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint8_t placeId | uint32_t period  
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint8_t placeId | uint32_t period
         \x08\x72\x00\x00\x00\x01\x01\x00\x00\x00\x14
+        ```
 
 -   Отмена бронирования парковочного места
     1.  1 байт - Идентификатор парковочного места
     
     * **Пакет:**  
-        uint32_t ID | uint8_t type | uint8_t placeId  
+        ```
+        uint32_t ID | uint8_t type | uint8_t placeId
         \x00\x00\x00\x01\x63\x01
+        ```
     * **UART пакет:**  
-        uint8_t len | uint32_t ID | uint8_t type | uint8_t placeId  
+        ```
+        uint8_t len | uint32_t ID | uint8_t type | uint8_t placeId
         \x06\x00\x00\x00\x01\x63\x01
+        ```
 
 При отправке сообщения через UART интерфейс перед заголовком добавляется
 еще 1 байт - длина сообщения.
